@@ -1,6 +1,9 @@
 <?php ob_start(); ?>
 <!-- ^from future edwin^ -->
+
 <?php include '../includes/db.php' ?>
+<?php include './functions.php' ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
