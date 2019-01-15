@@ -41,4 +41,25 @@ function deleteCategory(){
     }
 }
 
+function populate_posts_table(){
+    global $connection;
+    $query = "SELECT * FROM posts";
+    $get_posts = mysqli_query($connection, $query);
+    while($row = mysqli_fetch_assoc($get_posts)){
+        echo "<tr>";
+        echo "<td>{$row['post_id']}</td>";
+        echo "<td>{$row['post_author']}</td>";
+        echo "<td>{$row['post_title']}</td>";
+        echo "<td>{$row['post_cat_id']}</td>";
+        echo "<td>{$row['post_status']}</td>";
+        echo "<td><img alt='image' width='75' src='../images/{$row['post_img']}'</td>";
+        echo "<td>{$row['post_tags']}</td>";
+        echo "<td>{$row['post_comment_count']}</td>";
+        echo "<td>{$row['post_date']}</td>";
+        echo "<td><a href=''>delete</a></td>";
+        echo "</tr>";
+    }
+
+}
+
 ?>
