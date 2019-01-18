@@ -28,8 +28,13 @@
             $query = 'SELECT * FROM categories';
             $get_cats_for_sidebar = mysqli_query($connection, $query);
             while($row = mysqli_fetch_assoc($get_cats_for_sidebar)){
-                echo '<li><a href="#">' . $row['cat_title'] . '</a>
-                </li>';
+                ?>
+    
+                <li>
+                    <a href='category.php?id=<?php echo $row['cat_id'] ?>'> <?php echo $row['cat_title']; ?></a>
+                </li>
+                
+                <?php
             }
             ?>
             </ul>

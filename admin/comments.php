@@ -21,18 +21,18 @@
                         <?php
                         if(isset($_GET['source'])){
                             switch($_GET['source']){
-                                case 'add_post';
-                                    include './includes/add_post.php';
+                                case 'add_comment';
+                                    include './includes/comment.php';
                                     break;
-                                case 'edit_post';
-                                    include './includes/edit_post.php';
+                                case 'edit_comment';
+                                    include './includes/edit_comment.php';
                                     break;    
                                 
                                 default: 
-                                    include './includes/show_all_posts.php';
+                                    include './includes/show_all_comments.php';
                             }
                         } else {
-                            include './includes/show_all_posts.php';
+                            include './includes/show_all_comments.php';
                         }
                         ?>
 

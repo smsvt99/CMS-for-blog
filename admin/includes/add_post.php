@@ -11,7 +11,7 @@ if (isset($_POST['create_post'])){
    $post_tags = $_POST['tags'];
    $post_content = $_POST['content'];
    $post_date = date('d,m,y');
-   $post_comment_count = 4;
+   $post_comment_count = 0;
 
    move_uploaded_file($post_img_temp, "../images/{$post_img}");
 
@@ -22,6 +22,7 @@ if (isset($_POST['create_post'])){
        die('query failed: ' . mysqli_error($connection));
    }
 }
+header('location: posts.php');
 ?>
 
 
@@ -30,10 +31,17 @@ if (isset($_POST['create_post'])){
     <label for="title">Post Title</label>
     <input type="text" name="title" class="form-control">
 </div>
+
+
 <div class="form-group">
-    <label for="cat_id">Category Id</label>
-    <input type="text" name="cat_id" class="form-control">
+    <label for="cat_id">Category</label>
+    <!-- <input type="text" name="cat_id" class="form-control"> -->
+    <select class="form-control" name="cat_id">
+    <?php make_cat_options(); ?>
+</select>
 </div>
+
+
 <div class="form-group">
     <label for="author">Author</label>
     <input type="text" name="author" class="form-control">

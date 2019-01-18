@@ -1,3 +1,4 @@
+<?php delete_posts_with_marked_id(); ?>
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
@@ -10,6 +11,8 @@
             <th>Tags</th>
             <th>Comments</th>
             <th>Date</th>
+            <th>Delete</th>
+            <th>Edit</th>
         </tr>
     </thead>
     <tbody>

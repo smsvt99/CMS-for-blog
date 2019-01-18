@@ -1,5 +1,7 @@
 <?php include 'includes/admin_header.php' ?>
-<?php deleteCategory(); ?>
+<?php 
+// deleteUser(); 
+?>
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -21,18 +23,18 @@
                         <?php
                         if(isset($_GET['source'])){
                             switch($_GET['source']){
-                                case 'add_post';
-                                    include './includes/add_post.php';
+                                case 'add_user';
+                                    include './includes/add_user.php';
                                     break;
-                                case 'edit_post';
-                                    include './includes/edit_post.php';
+                                case 'edit_user';
+                                    include './includes/edit_users.php';
                                     break;    
                                 
                                 default: 
-                                    include './includes/show_all_posts.php';
+                                    include './includes/show_all_users.php';
                             }
                         } else {
-                            include './includes/show_all_posts.php';
+                            include './includes/show_all_users.php';
                         }
                         ?>
 

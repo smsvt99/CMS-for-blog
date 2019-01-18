@@ -1,4 +1,4 @@
-    <?php include "includes/db.php" ?>
+<?php include "includes/db.php" ?>
     <?php include "includes/header.php" ?>
     
     <!-- Navigation -->
@@ -17,7 +17,10 @@
 
                 <!-- First Blog Post -->
                 <?php
-                $query = "SELECT * FROM posts";
+                if(empty($_GET['id'])){
+                    head('location: index.php');
+                }
+                $query = "SELECT * FROM posts WHERE post_cat_id = {$_GET['id']}";
                 $get_posts = mysqli_query($connection, $query);
                 while ($row = mysqli_fetch_assoc($get_posts)){
                     $post_title = $row['post_title'];
@@ -26,11 +29,6 @@
                     $post_img = $row['post_img'];
                     $post_content = substr($row['post_content'], 0, 100) . "....";
                     $post_id = $row['post_id'];
-                    $post_status = $row['post_status'];
-                if($post_status !== 'published'){
-                    echo '<h1 class="text-center">No published posts</h1>';
-                    break;
-                } else {
 
                 ?>
                     
@@ -48,7 +46,7 @@
                 <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>                
                 
                 <?php
-                }}
+                }
                 ?>
                 
                 <hr>
