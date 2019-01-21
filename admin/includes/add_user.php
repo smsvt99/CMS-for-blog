@@ -19,6 +19,7 @@ if (isset($_POST['create_user'])){
    if(!$insert_post){
        die('query failed: ' . mysqli_error($connection));
    }
+   echo "user successfully created! <a href=users.php>See All Users</a>";
 }
 // header('location: posts.php');
 ?>

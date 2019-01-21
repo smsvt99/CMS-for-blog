@@ -1,7 +1,7 @@
-<?php include 'includes/admin_header.php' ?>
-<?php 
-// deleteUser(); 
+<?php include 'includes/admin_header.php'; 
+
 ?>
+
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -20,6 +20,7 @@
                             Welcome to Admin
                             <small>Author</small>
                         </h1>
+                        
                         <?php
                         if(isset($_GET['source'])){
                             switch($_GET['source']){

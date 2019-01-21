@@ -42,14 +42,14 @@
                 <img class="img-responsive" src="./images/<?php echo $post_img ?>" alt="">
                 <hr>
                 <p><?php echo $post_content?></p>
-                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>                
-                
+
                 <?php
                 }
                 ?>
                 
                                 <!-- Comments Form -->
-        <?php if(isset($_POST['create_comment'])){create_comment();} else { echo "not set"; } ?>
+        <?php if(isset($_POST['create_comment'])){
+            create_comment();} ?>
                                 <div class="well">
                     <h4>Leave a Comment:</h4>
                     <form role="form" action="" method="POST">

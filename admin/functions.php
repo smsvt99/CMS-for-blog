@@ -138,8 +138,8 @@ function update_post(){
         if(!$update_post){
             die('query failed: ' . mysqli_error($connection));
         }
+        header('location: posts.php');
     }
-    header('location: posts.php');
 }
 function delete_comment_with_marked_id(){
     global $connection;
@@ -282,5 +282,35 @@ function get_user_info($x){
         // $user_img = 'PLACEHOLDER';
         // $randSalt = 'PLACEHOLDER';
     } 
+}
+function get_user_info_session($x){
+    global $connection;
+    $query = "SELECT * FROM users WHERE user_id = {$_SESSION['user_id']}";
+    $get_users = mysqli_query($connection, $query);
+    while($row = mysqli_fetch_assoc($get_users)){
+        return $row[$x];
+        // $user_name = $row['user_name'];
+        // $user_password = $row['user_password'];
+        // $user_role = $row['user_role'];
+        // $user_first_name = $row['user_first_name'];
+        // $user_last_name = $row['user_last_name'];
+        // $user_email = $row['user_email'];
+        // $user_img = 'PLACEHOLDER';
+        // $randSalt = 'PLACEHOLDER';
+    } 
+}
+function get_numbers($table){
+    global $connection;
+    $query = "select * from {$table}";
+    $result = mysqli_query($connection, $query);
+    $number = mysqli_num_rows($result);
+    return $number;
+}
+
+function get_numbers_with_params($table, $param, $value){
+    global $connection;
+    $query = "select * from {$table} WHERE {$param} = {'$value'}";
+    $result = mysqli_query($connection, $query);
+    $number = mysqli_num_rows($result);
 }
 ?>

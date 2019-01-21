@@ -17,6 +17,25 @@
     <!-- /.input-group -->
 </div>
 
+<!-- Login -->
+
+<div class="well">
+    <?php if (isset($_GET['login'])){
+        echo "<p class=' text text-danger'>Invalid credentials, please try again.</p>";
+    } ?>
+    <h4>Login</h4>
+    <div class="form-group">
+    <form action="./includes/login.php" method="post">
+    <label for="username">Username</label>
+        <input type="text" class="form-control" name="username">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" name="password">
+        <input type="submit" name="login" class="btn btn-primary">
+        </form>
+    </div>
+    <!-- /.input-group -->
+</div>
+
 <!-- Blog Categories Well -->
 
 <div class="well">
