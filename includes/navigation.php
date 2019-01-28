@@ -21,6 +21,12 @@
                     $cat_title = $row['cat_title'];
                     echo "<li><a href='#'>{$cat_title}</a></li>";
                 }
+
+                if (isset($_SESSION['user_id'])){
+                    if (strpos($_SERVER['REQUEST_URI'], 'post.php?id')){
+                        echo "<li><a href='./admin/posts.php?source=edit_post&id={$_GET['id']}'>Edit Post</a></li>";
+                    } 
+                 }
                 ?>
                         <li><a href="admin">Admin</a></li>
                     <!-- <li>
@@ -32,6 +38,7 @@
                     <li>
                         <a href="#">Contact</a>
                     </li> -->
+
 
                 </ul>
             </div>

@@ -24,8 +24,9 @@ function populateCategoryTable(){
         echo "<tr>
                 <td>{$row['cat_id']}</td>
                 <td>{$row['cat_title']}</td>
-                <td><a href='categories.php?delete={$row['cat_id']}'>Delete</a></td>
                 <td><a href='categories.php?edit={$row['cat_id']}&name={$row['cat_title']}'>Edit</a></td>
+                <td><a onClick=\"javascript: return confirm('Are you sure you want to delete this category?');\"  href='categories.php?delete={$row['cat_id']}'>Delete</a></td>
+
                 </tr>";
             }
 }
@@ -61,8 +62,11 @@ function populate_posts_table(){
         echo "<td>{$row['post_tags']}</td>";
         echo "<td>{$row['post_comment_count']}</td>";
         echo "<td>{$row['post_date']}</td>";
-        echo "<td><a href='posts.php?delete={$row['post_id']}'>Delete</a></td>";
+
+        echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete this post?');\" href='posts.php?delete={$row['post_id']}'>Delete</a></td>";
+
         echo "<td><a href='posts.php?source=edit_post&id={$row['post_id']}'>Edit</a></td>";
+        echo "<td><a href='../post.php?id={$row['post_id']}'>View</a></td>";
         echo "</tr>";
     }
 
@@ -138,9 +142,10 @@ function update_post(){
         if(!$update_post){
             die('query failed: ' . mysqli_error($connection));
         }
-        header('location: posts.php');
+        echo "<p class='bg-success'> Post Updated Successfully!<a href='../post.php?id={$_GET['id']}'> See Updated Post</a> or <a href='./posts.php'>Go Back to all Posts</a></p>";
     }
 }
+
 function delete_comment_with_marked_id(){
     global $connection;
     if (isset($_GET['delete'])){
@@ -166,20 +171,9 @@ function populate_comments_table(){
         echo "<td>{$row['comment_date']}</td>";
         echo "<td><a href='comments.php?approve={$row['comment_id']}'>Approve</a></td>";
         echo "<td><a href='comments.php?unapprove={$row['comment_id']}'>Unapprove</a></td>";
-        echo "<td><a href='comments.php?delete={$row['comment_id']}'>Delete</a></td>";
+        echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete this comment?');\" href='comments.php?delete={$row['comment_id']}'>Delete</a></td>";
         echo "</tr>";
     }
-}
-
-function create_comment(){
-        global $connection;
-        $query = "INSERT into comments(comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) VALUES('{$_GET['id']}', '{$_POST['comment_author']}', '{$_POST['comment_email']}', '{$_POST['comment_content']}', 'pending', now()) " ;
-        $insert_comment = mysqli_query($connection, $query);
-
-        $query2="UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = {$_GET['id']}";
-        $update_post_count = mysqli_query($connection, $query2);
-
-
 }
 
 function get_post_name_from_id($id){
@@ -205,24 +199,6 @@ function approve_comment_with_marked_id(){
     }
 }
 
-function show_comments_for_post(){
-    global $connection;
-    $query = "SELECT * FROM comments WHERE comment_post_id = {$_GET['id']} AND comment_status = 'approved' ORDER BY comment_id DESC";
-    $get_comments = mysqli_query($connection, $query);
-    while ($row = mysqli_fetch_assoc($get_comments)){
-        echo '<div class="media">';
-        echo '<a class="pull-left" href="#">';
-        echo '<img class="media-object" src="http://placehold.it/64x64" alt="">
-        </a>';
-        echo '<div class="media-body">';
-            echo "<h4 class='media-heading'>{$row['comment_author']}
-                <small>{$row['comment_date']}</small>
-            </h4>";
-           echo $row['comment_content'];
-        echo '</div>';
-    echo '</div>';
-    }
-}
 function populate_users_table(){
     global $connection;
     $query = "SELECT * FROM users";
@@ -238,7 +214,7 @@ function populate_users_table(){
         echo "<td><a href='users.php?promote={$row['user_id']}'>Promote to Admin</a></td>";
         echo "<td><a href='users.php?demote={$row['user_id']}'>Demote</a></td>";
         echo "<td><a href='users.php?source=edit_user&id={$row['user_id']}'>Edit</a></td>";
-        echo "<td><a href='users.php?delete={$row['user_id']}'>Delete</a></td>";
+        echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete this user?');\" href='users.php?delete={$row['user_id']}'>Delete</a></td>";
         echo "</tr>";
 
     }
@@ -273,14 +249,6 @@ function get_user_info($x){
     $get_users = mysqli_query($connection, $query);
     while($row = mysqli_fetch_assoc($get_users)){
         return $row[$x];
-        // $user_name = $row['user_name'];
-        // $user_password = $row['user_password'];
-        // $user_role = $row['user_role'];
-        // $user_first_name = $row['user_first_name'];
-        // $user_last_name = $row['user_last_name'];
-        // $user_email = $row['user_email'];
-        // $user_img = 'PLACEHOLDER';
-        // $randSalt = 'PLACEHOLDER';
     } 
 }
 function get_user_info_session($x){
@@ -289,14 +257,6 @@ function get_user_info_session($x){
     $get_users = mysqli_query($connection, $query);
     while($row = mysqli_fetch_assoc($get_users)){
         return $row[$x];
-        // $user_name = $row['user_name'];
-        // $user_password = $row['user_password'];
-        // $user_role = $row['user_role'];
-        // $user_first_name = $row['user_first_name'];
-        // $user_last_name = $row['user_last_name'];
-        // $user_email = $row['user_email'];
-        // $user_img = 'PLACEHOLDER';
-        // $randSalt = 'PLACEHOLDER';
     } 
 }
 function get_numbers($table){
@@ -313,4 +273,156 @@ function get_numbers_with_params($table, $param, $value){
     $result = mysqli_query($connection, $query);
     $number = mysqli_num_rows($result);
 }
+function add_post(){
+    global $connection;
+    if (isset($_POST['create_post'])){
+        $post_title  = $_POST['title'];
+        $post_author = $_POST['author'];
+        $post_cat_id = $_POST['cat_id'];
+        $post_status = $_POST['status'];
+     
+        $post_img = $_FILES['image']['name'];
+        $post_img_temp = $_FILES['image']['tmp_name'];
+     
+        $post_tags = $_POST['tags'];
+        $post_content = $_POST['content'];
+        $post_date = date("Y-m-d");
+        $post_comment_count = 0;
+     
+        move_uploaded_file($post_img_temp, "../images/{$post_img}");
+     
+        $query = "INSERT into posts(post_cat_id, post_title, post_author, post_date, post_img, post_content, post_tags, post_comment_count, post_status) VALUES({$post_cat_id},'{$post_title}','{$post_author}',now(),'{$post_img}','{$post_content}','{$post_tags}',{$post_comment_count},'{$post_status}' ) ";
+        
+        $insert_post = mysqli_query($connection, $query);
+        if(!$insert_post){
+            die('query failed: ' . mysqli_error($connection));
+        } else {
+
+            $last_id = mysqli_insert_id($connection);
+
+            echo "<p class='bg-success'> Post Successful!<a href='../post.php?id={$last_id}'> See Your Post</a> or <a href='./posts.php'>Go to all Posts</a></p>";
+        }
+     }
+}
+function add_user(){
+if (isset($_POST['create_user'])){
+    global $connection;
+    $user_name = $_POST['user_name'];
+    $user_password = $_POST['user_password'];
+    $user_role = $_POST['user_role'];
+    $user_first_name = $_POST['user_first_name'];
+    $user_last_name = $_POST['user_last_name'];
+    $user_email = $_POST['user_email'];
+    $user_img = 'PLACEHOLDER';
+ 
+ //    $user_img = $_FILES['image']['name'];
+ //    $user_img_temp = $_FILES['image']['tmp_name'];
+ //    move_uploaded_file($post_img_temp, "../images/{$post_img}");
+ 
+    $query = "INSERT INTO users(user_img, user_name, user_password, user_role, user_first_name, user_email, user_last_name) VALUES('{$user_img}', '{$user_name}', '{$user_password}', '{$user_role}', '{$user_first_name}', '{$user_email}', '{$user_last_name}')" ;
+    
+    $insert_post = mysqli_query($connection, $query);
+    if(!$insert_post){
+        die('query failed: ' . mysqli_error($connection));
+    }
+    echo "<p class='bg-success'>user successfully created! <a href=users.php>See All Users</a></p>";
+    }
+}
+function update_user(){
+    global $connection;
+    if (isset($_POST['edit_user'])){
+        // $user_name = $_POST['user_name'];
+        // $user_password = $_POST['user_password'];
+        // $user_role = $_POST['user_role'];
+        // $user_first_name = $_POST['user_first_name'];
+        // $user_last_name = $_POST['user_last_name'];
+        // $user_email = $_POST['user_email'];
+        // $user_img = 'PLACEHOLDER';
+     
+     //    $user_img = $_FILES['image']['name'];
+     //    $user_img_temp = $_FILES['image']['tmp_name'];
+     //    move_uploaded_file($post_img_temp, "../images/{$post_img}");
+
+     $q = "SELECT randSalt FROM users";
+     $get_salt_result = mysqli_query($connection, $q);
+     if (!$get_salt_result){
+        die('QUERY FAILED: ' . mysqli_error($connection));
+     } else {
+        $salt_array = mysqli_fetch_array($get_salt_result);
+        $salt = $salt_array[0];
+        }
+    }
+
+    $encrypted_password = crypt($_POST['user_password'], $salt);
+     
+        $query = "UPDATE users SET ";
+        $query .= "user_name = '{$_POST['user_name']}', ";
+
+        $query .= "user_password = '{$encrypted_password}', ";
+        
+        $query .= "user_role = '{$_POST['user_role']}', ";
+        $query .= "user_first_name = '{$_POST['user_first_name']}', ";
+        $query .= "user_last_name = '{$_POST['user_last_name']}', ";
+        $query .= "user_email = '{$_POST['user_email']}' ";
+        $query .= "WHERE user_id = {$_GET['id']}";
+     
+        $edit = mysqli_query($connection, $query);
+        if(!$edit){
+            die('query failed: ' . mysqli_error($connection));
+        } else {
+         header('location: users.php');
+        }
+     }
+
+function update_category(){
+    if (isset($_POST['edit_submit'])){
+        global $connection;
+        $query = "UPDATE categories SET cat_title = '{$_POST['new_cat_name']}' WHERE cat_id = {$_GET['edit']}";
+        $edit_cat = mysqli_query($connection, $query);
+            if (!$edit_cat){
+                die ('query failed:' . mysqli_error($connection));
+            }
+    }
+}
+function escape($string){
+    global $connection;
+    return mysqli_real_escape_string($connection, trim(strip_tags($string)));
+}
+function display_name(){
+    if(isset($_SESSION['username'])){
+        echo $_SESSION['username'];
+    } else {
+        echo 'anonymous';
+    }
+}
+function register(){
+    if(isset($_POST['submit'])){
+        global $connection;
+        $username = escape($_POST['username']);
+        $email = escape($_POST['email']);
+        $password = escape($_POST['password']);
+        if (empty($_POST['username']) ||
+            empty($_POST['email']) ||
+            empty($_POST['password'])){
+                echo "<script>alert('Some fields left blank. Please fill out all fields in order to register.')</script>";
+            } else {
+                $query="SELECT randSalt FROM users";
+                $result = mysqli_query($connection, $query);
+                if (!$result){
+                    die('QUERY FAILED: ' . mysqli_error($connection));
+                } else {
+                    $salt_array = mysqli_fetch_array($result);
+                    $salt = $salt_array[0];
+                    // echo $salt;
+                    $encrypted_password = crypt($password, $salt);
+                    $query2 = "INSERT INTO users(user_name, user_email, user_password, user_role) VALUES('{$username}', '{$email}', '{$encrypted_password}', 'subscriber')";      
+                    $result2 = mysqli_query($connection, $query2);
+                    if (!$result2){
+                        die('QUERY FAILED: ' . mysqli_error($connection));
+                    } else {
+                        echo "<p class='bg-success text-center'>Success! Go <a href='./'>home</a> to log in.</p>"; }
+                    }
+                }
+            }
+        }
 ?>

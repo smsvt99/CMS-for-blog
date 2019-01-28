@@ -1,11 +1,5 @@
 <?php
-    if (isset($_POST['edit_submit'])){
-        $query = "UPDATE categories SET cat_title = '{$_POST['new_cat_name']}' WHERE cat_id = {$_GET['edit']}";
-        $edit_cat = mysqli_query($connection, $query);
-            if (!$edit_cat){
-                die ('query failed:' . mysqli_error($connection));
-            }
-    }
+    update_category();
 ?>
 
 <form action="" method="post">

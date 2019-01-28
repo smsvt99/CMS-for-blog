@@ -28,7 +28,16 @@ if (isset($_GET['id'])){
 </div>
 <div class="form-group">
     <label for="status">Status</label>
-    <input type="text" name="status" value="<?php echo $row['post_status']; ?>" class="form-control">
+    <select name="status" class="form-control">
+        <?php if ($row['post_status'] == 'draft'){
+            echo "<option value = 'draft'>Draft</option>";
+            echo "<option value = 'published'>Published</option>";
+        } else {
+            echo "<option value = 'published'>Published</option>";
+            echo "<option value = 'draft'>Draft</option>";
+        }
+        ?>
+    </select>
 </div>
 <div class="form-group">
     <img name="image" width="75px" src="../images/<?php echo $row['post_img']; ?>">

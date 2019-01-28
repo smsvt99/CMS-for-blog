@@ -11,13 +11,15 @@
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
-            <li><a href="..">Admin</a></li>
+            <li><a href="..">Blog Home</a></li>
                 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 
+                    <?php display_name(); ?>
+                    <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="./profile.php"><i class="fa fa-fw fa-user"></i> Profile</a>
+                            <a href="./profile.php"><i class="fa fa-fw fa-user"></i>Edit My Profile</a>
                         </li>
                         <li class="divider"></li>
                         <li>

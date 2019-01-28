@@ -124,7 +124,7 @@
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
         
-        ['Data','Published Posts','Drafts', 'Approved Comments', 'Unapproved Comments', 'Administrators', "Subscribers", "Categories"],
+        ['Data','Drafted Posts','Published Posts', 'Approved Comments', 'Unapproved Comments', 'Administrators', "Subscribers", "Categories"],
         
         ['Posts', <?php echo get_numbers("posts WHERE post_status = 'draft'");?>, <?php echo get_numbers("posts WHERE post_status = 'published'"); ?>, 0, 0, 0, 0, 0],
         

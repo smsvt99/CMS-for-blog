@@ -1,28 +1,6 @@
 <?php 
-if (isset($_POST['create_post'])){
-   $post_title  = $_POST['title'];
-   $post_author = $_POST['author'];
-   $post_cat_id = $_POST['cat_id'];
-   $post_status = $_POST['status'];
+add_post();
 
-   $post_img = $_FILES['image']['name'];
-   $post_img_temp = $_FILES['image']['tmp_name'];
-
-   $post_tags = $_POST['tags'];
-   $post_content = $_POST['content'];
-   $post_date = date('d,m,y');
-   $post_comment_count = 0;
-
-   move_uploaded_file($post_img_temp, "../images/{$post_img}");
-
-   $query = "INSERT into posts(post_cat_id, post_title, post_author, post_date, post_img, post_content, post_tags, post_comment_count, post_status) VALUES({$post_cat_id},'{$post_title}','{$post_author}',now(),'{$post_img}','{$post_content}','{$post_tags}',{$post_comment_count},'{$post_status}' ) ";
-   
-   $insert_post = mysqli_query($connection, $query);
-   if(!$insert_post){
-       die('query failed: ' . mysqli_error($connection));
-   }
-}
-header('location: posts.php');
 ?>
 
 
@@ -46,10 +24,15 @@ header('location: posts.php');
     <label for="author">Author</label>
     <input type="text" name="author" class="form-control">
 </div>
+
 <div class="form-group">
     <label for="status">Status</label>
-    <input type="text" name="status" class="form-control">
+    <select type="text" name="status" class="form-control">
+        <option value = 'published'>Published</option>
+        <option value = 'draft'>Draft</option>
+    </select>
 </div>
+
 <div class="form-group">
     <label for="image">Image</label>
     <input type="file" name="image">
@@ -60,7 +43,7 @@ header('location: posts.php');
 </div>
 <div class="form-group">
     <label for="content">Content</label>
-    <textarea type="text" name="content" class="form-control" cols="30" rows="10"></textarea>
+    <textarea type="text" name="content" id="body" class="form-control" cols="30" rows="10"></textarea>
 </div>
 <input type="submit" value="Create Post" name="create_post" class="btn btn-primary">
 </form>

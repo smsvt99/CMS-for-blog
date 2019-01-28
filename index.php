@@ -18,7 +18,10 @@
                 <!-- First Blog Post -->
                 <?php
                 $counter = 0;
-                $query = "SELECT * FROM posts WHERE post_status = 'published'";
+                $query = "SELECT * FROM posts WHERE post_status = 'published' ";
+                if(isset($_GET['author'])){
+                    $query .= "AND post_author = '{$_GET['author']}'";
+                }
                 $get_posts = mysqli_query($connection, $query);
                 while ($row = mysqli_fetch_assoc($get_posts)){
                     $counter++;
@@ -37,14 +40,14 @@
                     <a href="post.php?id=<?php echo $post_id ?>"><?php echo $post_title?></a>
                 </h2>
                 <p class="lead">
-                    by <a href="index.php"><?php echo $post_author?></a>
+                    by <a href="index.php?author=<?php echo $post_author ?>"><?php echo $post_author?></a>
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date?></p>
                 <hr>
                 <a href="post.php?id=<?php echo $post_id ?>"><img class="img-responsive" src="./images/<?php echo $post_img ?>" alt=""></a>
                 <hr>
                 <p><?php echo $post_content?></p>
-                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>                
+                <a class="btn btn-primary" href="post.php?id=<?php echo $post_id ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>                
                 
                 <?php
                 }

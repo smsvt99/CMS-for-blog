@@ -1,4 +1,6 @@
-<?php include "./admin/functions.php" ?>
+<?php 
+// include "./admin/functions.php"
+ ?>
 <?php include "includes/db.php" ?>
     <?php include "includes/header.php" ?>
     
@@ -35,7 +37,7 @@
                     <a href="#"><?php echo $post_title?></a>
                 </h2>
                 <p class="lead">
-                    by <a href="index.php"><?php echo $post_author?></a>
+                    by <a href="index.php?author=<?php echo $post_author; ?>"><?php echo $post_author?></a>
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date?></p>
                 <hr>
@@ -49,7 +51,8 @@
                 
                                 <!-- Comments Form -->
         <?php if(isset($_POST['create_comment'])){
-            create_comment();} ?>
+            create_comment();} 
+            ?>
                                 <div class="well">
                     <h4>Leave a Comment:</h4>
                     <form role="form" action="" method="POST">
@@ -86,6 +89,47 @@
         <!-- /.row -->
 
         <hr>
+        <?php 
+        
+        function create_comment(){
+            if(empty($_POST['comment_email']) ||
+            empty($_POST['comment_author']) ||
+            empty($_POST['comment_content'])){
+                echo "<script>alert('All fields are required when submitting a comment!')</script>";
+            } else {
+                global $connection;
+                $query = "INSERT into comments(comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) VALUES('{$_GET['id']}', '{$_POST['comment_author']}', '{$_POST['comment_email']}', '{$_POST['comment_content']}', 'unapproved', now()) " ;
+                $insert_comment = mysqli_query($connection, $query);
+                if(!$insert_comment){
+                    die('QUERY FAILED: ' . mysqli_err($conection));
+                }
+        
+                $query2="UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = {$_GET['id']}";
+                $update_post_count = mysqli_query($connection, $query2);
+            }
+        }
+
+        function show_comments_for_post(){
+            global $connection;
+            $query = "SELECT * FROM comments WHERE comment_post_id = {$_GET['id']} AND comment_status = 'approved' ORDER BY comment_id DESC";
+            $get_comments = mysqli_query($connection, $query);
+            while ($row = mysqli_fetch_assoc($get_comments)){
+                echo '<div class="media">';
+                echo '<a class="pull-left" href="#">';
+                echo '<img class="media-object" src="http://placehold.it/64x64" alt="">
+                </a>';
+                echo '<div class="media-body">';
+                    echo "<h4 class='media-heading'>{$row['comment_author']}
+                        <small>{$row['comment_date']}</small>
+                    </h4>";
+                   echo $row['comment_content'];
+                echo '</div>';
+            echo '</div>';
+            }
+        }
+        
+
+        ?>
 
 <?php 
 include "includes/footer.php"

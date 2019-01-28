@@ -13,6 +13,7 @@
             <th>Date</th>
             <th>Delete</th>
             <th>Edit</th>
+            <th>View</th>
         </tr>
     </thead>
     <tbody>
