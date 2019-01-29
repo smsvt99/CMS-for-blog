@@ -25,13 +25,13 @@
                 $get_posts = mysqli_query($connection, $query);
                 while ($row = mysqli_fetch_assoc($get_posts)){
                     $counter++;
-                    $post_title = $row['post_title'];
-                    $post_author = $row['post_author'];
-                    $post_date = $row['post_date'];
-                    $post_img = $row['post_img'];
-                    $post_content = substr($row['post_content'], 0, 100) . "....";
-                    $post_id = $row['post_id'];
-                    $post_status = $row['post_status'];
+                    $post_title = escape($row['post_title']);
+                    $post_author = escape($row['post_author']);
+                    $post_date = escape($row['post_date']);
+                    $post_img = escape($row['post_img']);
+                    $post_content = substr(escape($row['post_content']), 0, 100) . "....";
+                    $post_id = escape($row['post_id']);
+                    $post_status = escape($row['post_status']);
                     
 
                 ?>

@@ -9,7 +9,7 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-    <script>
+    <!-- <script>
             $(document).ready(
     () => {
         var div_box = "<div id='load-screen'><div id='loading'></div></div>";
@@ -19,7 +19,7 @@
         });
     }
 )
-    </script>
+    </script> -->
 
     <script src="./js/scripts.js"></script>
 

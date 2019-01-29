@@ -18,18 +18,18 @@
                 <!-- First Blog Post -->
                 <?php 
     if (isset($_POST['submit'])){
-        $lemma = $_POST['search'];
+        $lemma = escape($_POST['search']);
         $query = "SELECT * FROM posts WHERE post_tags LIKE '%$lemma%' ";
         $get_tagged_posts = mysqli_query($connection, $query);
         if (mysqli_num_rows($get_tagged_posts) == 0){
             echo 'no posts with that tag';
         } else {
             while ($row = mysqli_fetch_assoc($get_tagged_posts)){
-                $post_title = $row['post_title'];
-                $post_author = $row['post_author'];
-                $post_date = $row['post_date'];
-                $post_img = $row['post_img'];
-                $post_content = $row['post_content'];         
+                $post_title = escape($row['post_title']);
+                $post_author = escape($row['post_author']);
+                $post_date = escape($row['post_date']);
+                $post_img = escape($row['post_img']);
+                $post_content = escape($row['post_content']);         
     ?>    
                 <h2>
                     <a href="#"><?php echo $post_title?></a>

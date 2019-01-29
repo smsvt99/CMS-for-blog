@@ -26,11 +26,11 @@
                 $query = "SELECT * FROM posts WHERE post_id = {$_GET['id']}" ;
                 $get_posts = mysqli_query($connection, $query);
                 while ($row = mysqli_fetch_assoc($get_posts)){
-                    $post_title = $row['post_title'];
-                    $post_author = $row['post_author'];
-                    $post_date = $row['post_date'];
-                    $post_img = $row['post_img'];
-                    $post_content = $row['post_content'];
+                    $post_title = escape($row['post_title']);
+                    $post_author = escape($row['post_author']);
+                    $post_date = escape($row['post_date']);
+                    $post_img = escape($row['post_img']);
+                    $post_content = escape($row['post_content']);
                 ?>
                     
                 <h2>
@@ -98,31 +98,43 @@
                 echo "<script>alert('All fields are required when submitting a comment!')</script>";
             } else {
                 global $connection;
-                $query = "INSERT into comments(comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) VALUES('{$_GET['id']}', '{$_POST['comment_author']}', '{$_POST['comment_email']}', '{$_POST['comment_content']}', 'unapproved', now()) " ;
+                $id = escape($_GET['id']);
+                $author = escape($_POST['comment_author']);
+                $email = escape($_POST['comment_email']);
+                $content = escape($_POST['comment_content']);
+
+
+
+                $query = "INSERT into comments(comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) VALUES('{$id}', '{$author}', '{$email}', '{$content}', 'unapproved', now()) " ;
                 $insert_comment = mysqli_query($connection, $query);
                 if(!$insert_comment){
                     die('QUERY FAILED: ' . mysqli_err($conection));
                 }
         
-                $query2="UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = {$_GET['id']}";
+                $query2="UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = {$id}";
                 $update_post_count = mysqli_query($connection, $query2);
             }
         }
 
         function show_comments_for_post(){
             global $connection;
-            $query = "SELECT * FROM comments WHERE comment_post_id = {$_GET['id']} AND comment_status = 'approved' ORDER BY comment_id DESC";
+            $id = $_GET['id'];
+            $query = "SELECT * FROM comments WHERE comment_post_id = {$id} AND comment_status = 'approved' ORDER BY comment_id DESC";
             $get_comments = mysqli_query($connection, $query);
             while ($row = mysqli_fetch_assoc($get_comments)){
+                $author = escape($row['comment_author']);
+                $date = escape($row['comment_date']);
+                $content = $row['comment_content'];
+
                 echo '<div class="media">';
                 echo '<a class="pull-left" href="#">';
                 echo '<img class="media-object" src="http://placehold.it/64x64" alt="">
                 </a>';
                 echo '<div class="media-body">';
-                    echo "<h4 class='media-heading'>{$row['comment_author']}
-                        <small>{$row['comment_date']}</small>
+                    echo "<h4 class='media-heading'>{$author}
+                        <small>{$date}</small>
                     </h4>";
-                   echo $row['comment_content'];
+                   echo $content;
                 echo '</div>';
             echo '</div>';
             }
