@@ -120,19 +120,19 @@ function make_cat_options(){
 function update_post(){
     global $connection;
     if (isset($_POST['edit_post'])){
-        $post_title  = escape($_POST['title']);
-        $post_author = escape($_POST['author']);
-        $post_cat_id = escape($_POST['cat_id']);
-        $post_status = escape($_POST['status']);
+        $post_title  = $_POST['title'];
+        $post_author = $_POST['author'];
+        $post_cat_id = $_POST['cat_id'];
+        $post_status = $_POST['status'];
      
-        $post_img = escape($_FILES['image']['name']);
-        $post_img_temp = escape($_FILES['image']['tmp_name']);
+        $post_img = $_FILES['image']['name'];
+        $post_img_temp = $_FILES['image']['tmp_name'];
      
-        $post_tags = escape($_POST['tags']);
-        $post_content = escape($_POST['content']);
-        $post_date = escape(date('d,m,y'));
+        $post_tags = $_POST['tags'];
+        $post_content = $_POST['content'];
+        // $post_date = date('d,m,y');
         // $post_comment_count = 4;
-        $id = $_GET['id'];
+        $id = escape($_GET['id']);
 
      
         move_uploaded_file($post_img_temp, "../images/{$post_img}");
@@ -149,18 +149,22 @@ function update_post(){
         } 
 
         $query = "UPDATE posts SET ";
-        $query .= "post_title = '{$post_title}', ";
-        $query .= "post_author = '{$post_author}', ";
-        $query .= "post_cat_id = '{$post_cat_id}', ";
-        $query .= "post_status = '{$post_status}', ";
-        $query .= "post_img = '{$post_img}', ";
-        $query .= "post_tags = '{$post_tags}', ";
-        $query .= "post_content = '{$post_content}', ";
-        $query .= "post_date = now() ";
+        $query .= "post_title = ?, ";
+        $query .= "post_author = ?, ";
+        $query .= "post_cat_id = ?, ";
+        $query .= "post_status = ?, ";
+        $query .= "post_img = ?, ";
+        $query .= "post_tags = ?, ";
+        $query .= "post_content = ? ";
+        // $query .= "post_date = now() ";
         // $query .= "post_comment_count = '{$post_comment_count}' ";
-        $query .= "WHERE post_id = {$id}";
+        $query .= "WHERE post_id = ?";
+
+        $stmt = mysqli_prepare($connection, $query);
+        mysqli_stmt_bind_param($stmt, "ssissssi", $post_title, $post_author, $post_cat_id, $post_status, $post_img, $post_tags, $post_content, $id);
+        $update_post = mysqli_stmt_execute($stmt);
         
-        $update_post = mysqli_query($connection, $query);
+        // $update_post = mysqli_query($connection, $query);
         if(!$update_post){
             die('query failed: ' . mysqli_error($connection));
         }
@@ -311,7 +315,7 @@ function get_user_info_session($x){
 }
 function get_numbers($table){
     global $connection;
-    $table = escape($table); 
+    // $table = $table; 
     $query = "select * from {$table}";
     $result = mysqli_query($connection, $query);
     $number = mysqli_num_rows($result);
@@ -327,37 +331,57 @@ function get_numbers_with_params($table, $param, $value){
     $result = mysqli_query($connection, $query);
     $number = mysqli_num_rows($result);
 }
+
+
+
+
 function add_post(){
     global $connection;
     if (isset($_POST['create_post'])){
-        $post_title  = escape($_POST['title']);
-        $post_author = escape($_POST['author']);
-        $post_cat_id = escape($_POST['cat_id']);
-        $post_status = escape($_POST['status']);
+        $post_title  = $_POST['title'];
+        $post_author = $_POST['author'];
+        $post_cat_id = $_POST['cat_id'];
+        $post_status = $_POST['status'];
      
-        $post_img = escape($_FILES['image']['name']);
-        $post_img_temp = escape($_FILES['image']['tmp_name']);
+        $post_img = $_FILES['image']['name'];
+        $post_img_temp = $_FILES['image']['tmp_name'];
      
-        $post_tags = escape($_POST['tags']);
-        $post_content = escape($_POST['content']);
-        $post_date = escape(date("Y-m-d"));
+        $post_tags = $_POST['tags'];
+        $post_content = $_POST['content'];
+        $post_date = date("Y-m-d");
         $post_comment_count = 0;
+
+        if(!$connection){
+            echo 'no connection????';
+        } else {
+            echo 'connection good';
+        }
      
         move_uploaded_file($post_img_temp, "../images/{$post_img}");
      
-        $query = "INSERT into posts(post_cat_id, post_title, post_author, post_date, post_img, post_content, post_tags, post_comment_count, post_status) VALUES({$post_cat_id},'{$post_title}','{$post_author}',now(),'{$post_img}','{$post_content}','{$post_tags}',{$post_comment_count},'{$post_status}' ) ";
+        $stmt = mysqli_prepare($connection, "INSERT into posts(post_cat_id, post_title, post_author, post_date, post_img, post_content, post_tags, post_comment_count, post_status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
         
-        $insert_post = mysqli_query($connection, $query);
+        mysqli_stmt_bind_param($stmt, "issssssis", $post_cat_id, $post_title, $post_author, $post_date, $post_img, $post_content, $post_tags, $post_comment_count, $post_status);
+
+        $insert_post = mysqli_stmt_execute($stmt);
+
+        // {$post_cat_id},'{$post_title}','{$post_author}',now(),'{$post_img}','{$post_content}','{$post_tags}',{$post_comment_count},'{$post_status}'
+        // $insert_post = mysqli_query($connection, $query);
         if(!$insert_post){
             die('query failed: ' . mysqli_error($connection));
         } else {
 
-            $last_id = escape(mysqli_insert_id($connection));
+            $last_id = mysqli_insert_id($connection);
 
             echo "<p class='bg-success'> Post Successful!<a href='../post.php?id={$last_id}'> See Your Post</a> or <a href='./posts.php'>Go to all Posts</a></p>";
         }
      }
 }
+
+
+
+
+
 function add_user(){
 if (isset($_POST['create_user'])){
     global $connection;

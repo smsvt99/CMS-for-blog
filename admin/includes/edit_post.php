@@ -52,7 +52,7 @@ if (isset($_GET['id'])){
 </div>
 <div class="form-group">
     <label for="content">Content</label>
-    <textarea type="text" name="content" class="form-control" cols="30" rows="10"><?php echo $row['post_content']; ?></textarea>
+    <textarea type="text" name="content" class="form-control" cols="30" rows="10" id="body"><?php echo $row['post_content']; ?></textarea>
 </div>
 <input type="submit" value="Edit Post" name="edit_post" class="btn btn-primary">
 </form>

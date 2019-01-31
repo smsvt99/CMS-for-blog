@@ -18,21 +18,27 @@
                 <!-- First Blog Post -->
                 <?php
                 $counter = 0;
-                $query = "SELECT * FROM posts WHERE post_status = 'published' ";
+                $query = "SELECT post_id, post_cat_id, post_title, post_author, post_date, post_img, post_content, post_tags, post_comment_count, post_status FROM posts WHERE post_status = ? ";
                 if(isset($_GET['author'])){
-                    $query .= "AND post_author = '{$_GET['author']}'";
+                    $author = escape($_GET['author']);
+                    $query .= "AND post_author = ?";
                 }
-                $get_posts = mysqli_query($connection, $query);
-                while ($row = mysqli_fetch_assoc($get_posts)){
-                    $counter++;
-                    $post_title = escape($row['post_title']);
-                    $post_author = escape($row['post_author']);
-                    $post_date = escape($row['post_date']);
-                    $post_img = escape($row['post_img']);
-                    $post_content = substr(escape($row['post_content']), 0, 100) . "....";
-                    $post_id = escape($row['post_id']);
-                    $post_status = escape($row['post_status']);
-                    
+                $published = 'published';
+                                
+                $stmt = mysqli_prepare($connection, $query);
+                
+                if(isset($_GET['author'])){
+                    mysqli_stmt_bind_param($stmt, "ss", $published, $author);
+                } else {
+                    mysqli_stmt_bind_param($stmt, "s", $published);
+                }
+                
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_bind_result($stmt, $post_id, $post_cat_id, $post_title, $post_author, $post_date, $post_img, $post_content, $post_tags, $post_comment_count, $post_status);
+
+                      
+                    while (mysqli_stmt_fetch($stmt)){
+                        $post_content = substr($post_content, 0, 300) . "....";
 
                 ?>
                     

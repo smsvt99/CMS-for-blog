@@ -23,14 +23,23 @@
                 if (empty($_GET['id'])){
                     header('location: index.php');
                 }
-                $query = "SELECT * FROM posts WHERE post_id = {$_GET['id']}" ;
-                $get_posts = mysqli_query($connection, $query);
-                while ($row = mysqli_fetch_assoc($get_posts)){
-                    $post_title = escape($row['post_title']);
-                    $post_author = escape($row['post_author']);
-                    $post_date = escape($row['post_date']);
-                    $post_img = escape($row['post_img']);
-                    $post_content = escape($row['post_content']);
+                $id = $_GET['id'];
+                $query = "SELECT post_cat_id, post_title, post_author, post_date, post_img, post_content, post_tags, post_comment_count, post_status FROM posts WHERE post_id = ? " ;
+                $stmt = mysqli_prepare($connection, $query);
+                mysqli_stmt_bind_param($stmt, "i", $id);
+                $thing = mysqli_stmt_execute($stmt);
+                if(!$thing){
+                    die("FAILURE: " . mysqli_error($connection));
+                }
+                mysqli_stmt_bind_result($stmt, $post_cat_id, $post_title, $post_author, $post_date, $post_img, $post_content, $post_tags, $post_comment_count, $post_status);
+                // $get_posts = mysqli_query($connection, $query);
+                // while ($row = mysqli_fetch_assoc($get_posts)){
+                    // $post_title = escape($row['post_title']);
+                    // $post_author = escape($row['post_author']);
+                    // $post_date = escape($row['post_date']);
+                    // $post_img = escape($row['post_img']);
+                    // $post_content = escape($row['post_content']);
+                while(mysqli_stmt_fetch($stmt)){
                 ?>
                     
                 <h2>
