@@ -108,12 +108,30 @@ function delete_posts_with_marked_id(){
 
 function make_cat_options(){
     global $connection;
-    $query = 'SELECT * FROM categories';
-    $cat_options = mysqli_query($connection, $query);
+    $clean_id = escape($_GET['id']);
+    $current_cat_id = get_cat_id_from_post_id($clean_id);
+
+    $query1 = "SELECT * FROM categories WHERE cat_id = {$current_cat_id}";
+    $cat_option = mysqli_query($connection, $query1);
+    while($row = mysqli_fetch_assoc($cat_option)){
+        $id = $row['cat_id'];
+        $title = $row['cat_title'];
+        echo "<option value='{$id}'>{$title}</option>";
+    }
+    $query2 = "SELECT * FROM categories WHERE cat_id != {$current_cat_id}";
+    $cat_options = mysqli_query($connection, $query2);
     while($row = mysqli_fetch_assoc($cat_options)){
         $id = $row['cat_id'];
         $title = $row['cat_title'];
         echo "<option value='{$id}'>{$title}</option>";
+    }
+}
+function get_cat_id_from_post_id($id){
+    global $connection;
+    $query = "SELECT post_cat_id FROM posts WHERE post_id = {$id}";
+    $result = mysqli_query($connection, $query);
+    while($row = mysqli_fetch_assoc($result)){
+        return $row['post_cat_id'];
     }
 }
 
@@ -431,7 +449,7 @@ function update_user(){
         $salt_array = mysqli_fetch_array($get_salt_result);
         $salt = $salt_array[0];
         }
-    }
+    } 
 
     $encrypted_password = crypt($user_password, $salt);
      
