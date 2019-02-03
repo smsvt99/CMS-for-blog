@@ -21,8 +21,9 @@
                 $query = "SELECT post_id, post_cat_id, post_title, post_author, post_date, post_img, post_content, post_tags, post_comment_count, post_status FROM posts WHERE post_status = ? ";
                 if(isset($_GET['author'])){
                     $author = escape($_GET['author']);
-                    $query .= "AND post_author = ?";
+                    $query .= "AND post_author = ? ";
                 }
+                $query .= "ORDER BY post_date DESC";
                 $published = 'published';
                                 
                 $stmt = mysqli_prepare($connection, $query);
