@@ -134,6 +134,16 @@ function get_cat_id_from_post_id($id){
         return $row['post_cat_id'];
     }
 }
+function make_cat_options_add(){
+    global $connection;
+    $query = "SELECT * FROM categories";
+    $cat_options = mysqli_query($connection, $query);
+    while($row = mysqli_fetch_assoc($cat_options)){
+        $id = $row['cat_id'];
+        $title = $row['cat_title'];
+        echo "<option value='{$id}'>{$title}</option>";
+    }
+}
 
 function update_post(){
     global $connection;

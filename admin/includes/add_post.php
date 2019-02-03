@@ -15,7 +15,7 @@ add_post();
     <label for="cat_id">Category</label>
     <!-- <input type="text" name="cat_id" class="form-control"> -->
     <select class="form-control" name="cat_id">
-    <?php make_cat_options(); ?>
+    <?php make_cat_options_add(); ?>
 </select>
 </div>
 
