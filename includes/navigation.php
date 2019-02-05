@@ -18,8 +18,9 @@
                 $query = "SELECT * FROM categories";
                 $get_categories = mysqli_query($connection, $query);
                 while ($row = mysqli_fetch_assoc($get_categories)){
-                    $cat_title = $row['cat_title'];
-                    echo "<li><a href='#'>{$cat_title}</a></li>";
+                    $cat_title = ucwords($row['cat_title']);
+                    $cat_id = $row['cat_id'];
+                    echo "<li><a href=category.php?id={$cat_id}>{$cat_title}</a></li>";
                 }
 
                 if (isset($_SESSION['user_id'])){
@@ -28,7 +29,7 @@
                     } 
                  }
                 ?>
-                        <li><a href="admin">Admin</a></li>
+                        <li><a href="admin" class="blue">Admin</a></li>
                     <!-- <li>
                         <a href="#">About</a>
                     </li>

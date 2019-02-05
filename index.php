@@ -4,16 +4,17 @@
     <!-- Navigation -->
    <?php include "includes/navigation.php" ?>    <!-- Page Content -->
     <div class="container">
+    <h1 id="title" class="text-center">
+                    > Hello World _
+                    <small><i>A Blog About Itself</i></small>
+                </h1>
+                <h1 id="sub_title">All posts</h1>
 
         <div class="row">
 
             <!-- Blog Entries Column -->
-            <div class="col-md-8">
+            <div class="col-md-9">
 
-                <h1 class="page-header">
-                    Page Heading
-                    <small>Secondary Text</small>
-                </h1>
 
                 <!-- First Blog Post -->
                 <?php
@@ -23,7 +24,7 @@
                     $author = escape($_GET['author']);
                     $query .= "AND post_author = ? ";
                 }
-                $query .= "ORDER BY post_date DESC";
+                $query .= "ORDER BY post_id DESC";
                 $published = 'published';
                                 
                 $stmt = mysqli_prepare($connection, $query);
@@ -42,7 +43,7 @@
                         $post_content = substr($post_content, 0, 300) . "....";
 
                 ?>
-                    
+                    <div class="not-black">
                 <h2>
                     <a href="post.php?id=<?php echo $post_id ?>"><?php echo $post_title?></a>
                 </h2>
@@ -57,22 +58,22 @@
                     <p><?php echo $post_content?></p>
                 </div>
                 <a class="btn btn-primary" href="post.php?id=<?php echo $post_id ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>                
-                
+                    </div>
                 <?php
                 }
                 ?>
                 
-                <hr>
+                <!-- <hr> -->
 
                 <!-- Pager -->
-                <ul class="pager">
+                <!-- <ul class="pager">
                     <li class="previous">
                         <a href="#">&larr; Older</a>
                     </li>
                     <li class="next">
                         <a href="#">Newer &rarr;</a>
                     </li>
-                </ul>
+                </ul> -->
 
             </div>
 

@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Blog Home - Start Bootstrap Template</title>
+    <title>Hello World</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -27,6 +27,47 @@
     <![endif]-->
 
     <?php include './admin/functions.php' ?>
+    <style>
+        #title{
+            color: lime;
+            font-size: 40px;
+            padding: 20px;
+            font-family: monospace;
+        }
+        #sub_title{
+            color: #4682B4;
+            font-size: 25px;
+            padding: 10px;
+            font-family: monospace;
+            font-weight: lighter;
+        }
+
+        body{
+            background: #222222;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to bottom, #222222, #222222, #222222, #222222, #4682B4);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to bottom, #222222, #222222, #222222, #222222, #4682B4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background-attachment: fixed;
+
+        }
+        .not-black{
+            padding: 20px;
+            background-color: #f5f5f5;
+            border: 1px solid #e3e3e3;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .sticky{
+            position: sticky;
+            position: -webkit-sticky;
+            top: 10px;
+        }
+        a.blue{
+            color: #4682B4 !important;
+        }
+        a.blue:hover{
+            color: white !important;
+        }
+        </style>
 
 
 </head>

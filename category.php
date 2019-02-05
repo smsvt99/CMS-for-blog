@@ -4,34 +4,36 @@
     <!-- Navigation -->
    <?php include "includes/navigation.php" ?>    <!-- Page Content -->
     <div class="container">
+    <h1 id="title" class="text-center">
+                    > Hello World _
+                    <small><i>A Blog About Itself</i></small>
+                </h1>
 
         <div class="row">
-
+        <h1 id="sub_title">
+                <?php 
+                echo ucwords(get_cat_name_from_id(escape($_GET['id']))); ?>
+            </h1>
             <!-- Blog Entries Column -->
-            <div class="col-md-8">
-
-                <h1 class="page-header">
-                    Page Heading
-                    <small>Secondary Text</small>
-                </h1>
+            <div class="col-md-9">
 
                 <!-- First Blog Post -->
                 <?php
                 if(empty($_GET['id'])){
                     head('location: index.php');
                 }
-                $query = "SELECT * FROM posts WHERE post_cat_id = {$_GET['id']}";
+                $query = "SELECT * FROM posts WHERE post_cat_id = {$_GET['id']} ORDER BY post_id DESC";
                 $get_posts = mysqli_query($connection, $query);
                 while ($row = mysqli_fetch_assoc($get_posts)){
                     $post_title = escape($row['post_title']);
                     $post_author = escape($row['post_author']);
                     $post_date = escape($row['post_date']);
                     $post_img = escape($row['post_img']);
-                    $post_content = substr(escape($row['post_content']), 0, 100) . "....";
+                    $post_content = substr(escape($row['post_content']), 0, 300) . "....";
                     $post_id = escape($row['post_id']);
 
                 ?>
-                    
+                  <div class="not-black">  
                 <h2>
                     <a href="post.php?id=<?php echo $post_id ?>"><?php echo $post_title?></a>
                 </h2>
@@ -44,22 +46,22 @@
                 <hr>
                 <p><?php echo $post_content?></p>
                 <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>                
-                
+                </div>
                 <?php
                 }
                 ?>
                 
-                <hr>
+                <!-- <hr> -->
 
                 <!-- Pager -->
-                <ul class="pager">
+                <!-- <ul class="pager">
                     <li class="previous">
                         <a href="#">&larr; Older</a>
                     </li>
                     <li class="next">
                         <a href="#">Newer &rarr;</a>
                     </li>
-                </ul>
+                </ul> -->
 
             </div>
 

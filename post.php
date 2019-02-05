@@ -7,16 +7,15 @@
     <!-- Navigation -->
    <?php include "includes/navigation.php" ?>    <!-- Page Content -->
     <div class="container">
+    <h1 id="title" class="text-center">
+                    > Hello World _
+                    <small><i>A Blog About Itself</i></small>
+                </h1>
 
         <div class="row">
 
             <!-- Blog Entries Column -->
-            <div class="col-md-8">
-
-                <h1 class="page-header">
-                    Page Heading
-                    <small>Secondary Text</small>
-                </h1>
+            <div class="col-md-12">
 
                 <!-- First Blog Post -->
                 <?php 
@@ -40,8 +39,19 @@
                     // $post_img = escape($row['post_img']);
                     // $post_content = escape($row['post_content']);
                 while(mysqli_stmt_fetch($stmt)){
+
+
+
                 ?>
-                    
+                    <h1 id="sub_title">
+                        <?php 
+                        echo $post_date . ": ";
+                        echo $post_title;
+                        echo " by ";
+                        echo $post_author;
+                        ?>
+                    </h1>
+                   <div class="not-black"> 
                 <h2>
                     <a href="#"><?php echo $post_title?></a>
                 </h2>
@@ -53,7 +63,7 @@
                 <img class="img-responsive" src="./images/<?php echo $post_img ?>" alt="">
                 <hr>
                 <p><?php echo $post_content?></p>
-
+                </div>
                 <?php
                 }
                 ?>
@@ -92,12 +102,14 @@
             </div>
 
             <!-- Blog Sidebar Widgets Column -->
-        <?php include "includes/sidebar.php" ?>
+        <?php 
+        // include "includes/sidebar.php" 
+        ?>
 
         </div>
         <!-- /.row -->
 
-        <hr>
+        <!-- <hr> -->
         <?php 
         
         function create_comment(){

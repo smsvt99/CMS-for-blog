@@ -1,9 +1,9 @@
-<div class="col-md-4">
+<div class="col-md-3 sticky">
 
 <!-- Blog Search Well -->
 
-<div class="well">
-    <h4>Blog Search</h4>
+<!-- <div class="well"> -->
+    <!-- <h4>Blog Search</h4>
     <div class="input-group">
     <form action="./search.php" method="post">
         <input type="text" class="form-control" name="search">
@@ -13,12 +13,11 @@
         </button>
         </span>
         </form>
-    </div>
+    </div> -->
     <!-- /.input-group -->
-</div>
+<!-- </div> -->
 
 <!-- Login -->
-
 <div class="well">
     <?php if (isset($_GET['login'])){
         echo "<p class=' text text-danger'>Invalid credentials, please try again.</p>";
@@ -39,21 +38,34 @@
 <!-- Blog Categories Well -->
 
 <div class="well">
-    <h4>Blog Categories</h4>
+    <h4>Tags</h4>
     <div class="row">
         <div class="col-lg-12">
             <ul class="list-unstyled">
             <?php 
-            $query = 'SELECT * FROM categories';
-            $get_cats_for_sidebar = mysqli_query($connection, $query);
-            while($row = mysqli_fetch_assoc($get_cats_for_sidebar)){
+            $query = 'SELECT post_tags FROM posts';
+            $get_tags_for_sidebar = mysqli_query($connection, $query);
+            $allTagsArray = [];
+            $allTagsString = '';
+            while($row = mysqli_fetch_assoc($get_tags_for_sidebar)){
+                $string = $row['post_tags'];
+                if ($string != ''){
+                    $tagArray = explode(", ", $string);
+                    for ($i = 0; $i < sizeof($tagArray); $i++){
+                        array_push($allTagsArray, $tagArray[$i]);
+                    }
+            }
                 ?>
     
-                <li>
+                <!-- <li>
                     <a href='category.php?id=<?php echo $row['cat_id'] ?>'> <?php echo $row['cat_title']; ?></a>
-                </li>
+                </li> -->
                 
                 <?php
+            }
+            for($i=0; $i < sizeof($allTagsArray); $i++){
+                echo "<a href ='search.php?search={$allTagsArray[$i]}'>{$allTagsArray[$i]}</a>";
+                echo ' &#8226; ';
             }
             ?>
             </ul>
@@ -65,6 +77,6 @@
 </div>
 
 <!-- Side Widget Well -->
-<?php include 'widget.php' ?>
+<!-- <?php include 'widget.php' ?> -->
 
 </div>
