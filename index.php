@@ -53,7 +53,9 @@
                 <hr>
                 <a href="post.php?id=<?php echo $post_id ?>"><img class="img-responsive" src="./images/<?php echo $post_img ?>" alt=""></a>
                 <hr>
-                <p><?php echo $post_content?></p>
+                <div>
+                    <p><?php echo $post_content?></p>
+                </div>
                 <a class="btn btn-primary" href="post.php?id=<?php echo $post_id ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>                
                 
                 <?php
