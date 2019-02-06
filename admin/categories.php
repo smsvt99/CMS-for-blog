@@ -15,8 +15,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Welcome to Admin
-                            <small>Author</small>
+                            Categories
+                            <small><?php display_name(); ?></small>
                         </h1>
                 <!-- /Page Heading -->
                 <!-- form -->
@@ -41,6 +41,8 @@
                                 <tr>
                                     <th>id</th>
                                     <th>category title</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
                                 </tr>
                             </thead>
                             <tbody>

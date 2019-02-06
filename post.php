@@ -13,7 +13,8 @@
         <div class="row">
 
             <!-- Blog Entries Column -->
-            <div class="col-md-12">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
 
                 <!-- First Blog Post -->
                 <?php 
@@ -65,6 +66,8 @@
                 <?php
                 }
                 ?>
+                                <!-- Comment -->
+                                <?php show_comments_for_post(); ?>
                 
                                 <!-- Comments Form -->
         <?php if(isset($_POST['create_comment'])){
@@ -75,11 +78,21 @@
                     <form role="form" action="" method="POST">
                     <div class="form-group">
                         <label for="comment_author">Author</label>
-                        <input type="text" class="form-control" name="comment_author">
+                        <input type="text" class="form-control" name="comment_author"
+                        <?php if(isset($_SESSION['username'])){
+                            echo "value='{$_SESSION['username']}'";
+                            echo " readonly";
+                        } ?>
+                        >
                     </div>
                     <div class="form-group">
                         <label for="comment_email">Email</label>
-                        <input type="text" class="form-control" name="comment_email">
+                        <input type="text" class="form-control" name="comment_email"
+                        <?php if(isset($_SESSION['user_email'])){
+                            echo "value='{$_SESSION['user_email']}'";
+                            echo " readonly";
+                        } ?>
+                        >
                     </div>
                     <div class="form-group"></div>
 
@@ -91,12 +104,10 @@
                     </form>
                 </div>
 
-                <hr>
+                <!-- <hr> -->
 
                 <!-- Posted Comments -->
 
-                <!-- Comment -->
-                <?php show_comments_for_post(); ?>
             </div>
 
             <!-- Blog Sidebar Widgets Column -->
@@ -145,10 +156,9 @@
                 $date = escape($row['comment_date']);
                 $content = $row['comment_content'];
 
-                echo '<div class="media">';
+                echo '<div class="media not-black">';
                 echo '<a class="pull-left" href="#">';
-                echo '<img class="media-object" src="http://placehold.it/64x64" alt="">
-                </a>';
+                echo "<img class='media-object' src='https://api.adorable.io/avatars/64/{$author}.png' alt=''></a>";
                 echo '<div class="media-body">';
                     echo "<h4 class='media-heading'>{$author}
                         <small>{$date}</small>

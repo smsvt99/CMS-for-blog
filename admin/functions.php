@@ -7,15 +7,19 @@ function escape($string){
 function makeNewCategory(){
     global $connection;
     if(isset($_POST['submit'])){
-        if($_POST['cat_title'] == ''){
-            echo 'empty field!';
+        if(is_visitor()){
+            redirect_visitor();
         } else {
-            $new_cat_title = escape($_POST['cat_title']);
-            $query = "INSERT INTO categories(cat_title) "; 
-            $query .= "VALUE('{$new_cat_title}') ";
-            $insertQuery = mysqli_query($connection, $query);
-            if(!$insertQuery){
-                die('QUERY FAILED <br/>' . mysqli_error($connection) . '<br>' . escape($query));
+            if($_POST['cat_title'] == ''){
+                echo 'empty field!';
+            } else {
+                $new_cat_title = escape($_POST['cat_title']);
+                $query = "INSERT INTO categories(cat_title) "; 
+                $query .= "VALUE('{$new_cat_title}') ";
+                $insertQuery = mysqli_query($connection, $query);
+                if(!$insertQuery){
+                    die('QUERY FAILED <br/>' . mysqli_error($connection) . '<br>' . escape($query));
+                }
             }
         }
     }
@@ -40,11 +44,15 @@ function populateCategoryTable(){
 function deleteCategory(){
     global $connection;
     if(isset($_GET['delete'])){
-        $delete_id = escape($_GET['delete']);
-        $query = "DELETE FROM categories WHERE cat_id = {$delete_id}";
-        $delete_cat = mysqli_query($connection, $query);
-        if (!$delete_cat){
-            die('QUERY FAILED <br/>' . mysqli_error($connection));
+        if (is_visitor()){
+            redirect_visitor();
+        } else {
+            $delete_id = escape($_GET['delete']);
+            $query = "DELETE FROM categories WHERE cat_id = {$delete_id}";
+            $delete_cat = mysqli_query($connection, $query);
+            if (!$delete_cat){
+                die('QUERY FAILED <br/>' . mysqli_error($connection));
+            }
         }
     }
 }
@@ -98,11 +106,15 @@ function get_cat_name_from_id($id){
 }
 
 function delete_posts_with_marked_id(){
-    global $connection;
-    if (isset($_GET['delete'])){
-        $delete = escape($_GET['delete']);
-        $query = "DELETE FROM posts WHERE post_id = {$delete}";
-        mysqli_query($connection, $query);
+        global $connection;
+        if (isset($_GET['delete'])){
+            if (is_visitor()){
+                redirect_visitor();
+            } else {
+            $delete = escape($_GET['delete']);
+            $query = "DELETE FROM posts WHERE post_id = {$delete}";
+            mysqli_query($connection, $query);
+        }
     }
 }
 
@@ -146,66 +158,74 @@ function make_cat_options_add(){
 }
 
 function update_post(){
-    global $connection;
-    if (isset($_POST['edit_post'])){
-        $post_title  = $_POST['title'];
-        $post_author = $_POST['author'];
-        $post_cat_id = $_POST['cat_id'];
-        $post_status = $_POST['status'];
-     
-        $post_img = $_FILES['image']['name'];
-        $post_img_temp = $_FILES['image']['tmp_name'];
-     
-        $post_tags = $_POST['tags'];
-        $post_content = $_POST['content'];
-        // $post_date = date('d,m,y');
-        // $post_comment_count = 4;
-        $id = escape($_GET['id']);
-
-     
-        move_uploaded_file($post_img_temp, "../images/{$post_img}");
-
-        if(empty($post_img)){
-            $query2 = "SELECT * FROM posts WHERE post_id={$id}";
-            $fetch_img = mysqli_query($connection, $query2);
-            if(!$fetch_img){
-                die('QUERY FAILED: ' . mysqli_error($connection));
-            }
-            while($row = mysqli_fetch_assoc($fetch_img)){
-                $post_img = escape($row['post_img']);
-            }
-        } 
-
-        $query = "UPDATE posts SET ";
-        $query .= "post_title = ?, ";
-        $query .= "post_author = ?, ";
-        $query .= "post_cat_id = ?, ";
-        $query .= "post_status = ?, ";
-        $query .= "post_img = ?, ";
-        $query .= "post_tags = ?, ";
-        $query .= "post_content = ? ";
-        // $query .= "post_date = now() ";
-        // $query .= "post_comment_count = '{$post_comment_count}' ";
-        $query .= "WHERE post_id = ?";
-
-        $stmt = mysqli_prepare($connection, $query);
-        mysqli_stmt_bind_param($stmt, "ssissssi", $post_title, $post_author, $post_cat_id, $post_status, $post_img, $post_tags, $post_content, $id);
-        $update_post = mysqli_stmt_execute($stmt);
+        global $connection;
+        if (isset($_POST['edit_post'])){
+            if(is_visitor()){
+                redirect_visitor();
+            } else {
+            $post_title  = $_POST['title'];
+            $post_author = $_POST['author'];
+            $post_cat_id = $_POST['cat_id'];
+            $post_status = $_POST['status'];
         
-        // $update_post = mysqli_query($connection, $query);
-        if(!$update_post){
-            die('query failed: ' . mysqli_error($connection));
+            $post_img = $_FILES['image']['name'];
+            $post_img_temp = $_FILES['image']['tmp_name'];
+        
+            $post_tags = $_POST['tags'];
+            $post_content = $_POST['content'];
+            // $post_date = date('d,m,y');
+            // $post_comment_count = 4;
+            $id = escape($_GET['id']);
+
+        
+            move_uploaded_file($post_img_temp, "../images/{$post_img}");
+
+            if(empty($post_img)){
+                $query2 = "SELECT * FROM posts WHERE post_id={$id}";
+                $fetch_img = mysqli_query($connection, $query2);
+                if(!$fetch_img){
+                    die('QUERY FAILED: ' . mysqli_error($connection));
+                }
+                while($row = mysqli_fetch_assoc($fetch_img)){
+                    $post_img = escape($row['post_img']);
+                }
+            } 
+
+            $query = "UPDATE posts SET ";
+            $query .= "post_title = ?, ";
+            $query .= "post_author = ?, ";
+            $query .= "post_cat_id = ?, ";
+            $query .= "post_status = ?, ";
+            $query .= "post_img = ?, ";
+            $query .= "post_tags = ?, ";
+            $query .= "post_content = ? ";
+            // $query .= "post_date = now() ";
+            // $query .= "post_comment_count = '{$post_comment_count}' ";
+            $query .= "WHERE post_id = ?";
+
+            $stmt = mysqli_prepare($connection, $query);
+            mysqli_stmt_bind_param($stmt, "ssissssi", $post_title, $post_author, $post_cat_id, $post_status, $post_img, $post_tags, $post_content, $id);
+            $update_post = mysqli_stmt_execute($stmt);
+            
+            // $update_post = mysqli_query($connection, $query);
+            if(!$update_post){
+                die('query failed: ' . mysqli_error($connection));
+            }
+            echo "<p class='bg-success'> Post Updated Successfully!<a href='../post.php?id={$id}'> See Updated Post</a> or <a href='./posts.php'>Go Back to all Posts</a></p>";
         }
-        echo "<p class='bg-success'> Post Updated Successfully!<a href='../post.php?id={$id}'> See Updated Post</a> or <a href='./posts.php'>Go Back to all Posts</a></p>";
     }
 }
 
 function delete_comment_with_marked_id(){
     global $connection;
     if (isset($_GET['delete'])){
-        $delete = $_GET['delete'];
-        $query = "DELETE FROM comments WHERE comment_id = {$delete}";
-        mysqli_query($connection, $query);
+        if (is_visitor()){
+            redirect_visitor();
+        } else {
+            $delete = $_GET['delete'];
+            $query = "DELETE FROM comments WHERE comment_id = {$delete}";
+            mysqli_query($connection, $query);
+        }
     }
 }
 function populate_comments_table(){
@@ -223,6 +243,10 @@ function populate_comments_table(){
         $status = escape($row['comment_status']);
         $post_id = escape($row['comment_post_id']);
         $date = escape($row['comment_date']);
+
+        if(is_visitor()){
+            $email = 'This content hidden from visitors';
+        }
 
         echo "<tr>";
         echo "<td>{$id}</td>";
@@ -252,17 +276,25 @@ function get_post_name_from_id($id){
 function unapprove_comment_with_marked_id(){
     global $connection;
     if (isset($_GET['unapprove'])){
-        $unapprove = escape($_GET['unapprove']);
-    $query = "UPDATE comments SET comment_status = 'unapproved' WHERE comment_id = {$unapprove}";
-       $thing = mysqli_query($connection, $query);
+        if(is_visitor()){
+            redirect_visitor();
+        } else {
+            $unapprove = escape($_GET['unapprove']);
+            $query = "UPDATE comments SET comment_status = 'unapproved' WHERE comment_id = {$unapprove}";
+            $thing = mysqli_query($connection, $query);
+        }
     }
 }
 function approve_comment_with_marked_id(){
     global $connection;
     if (isset($_GET['approve'])){
-        $approve = escape($_GET['approve']);
-        $query = "UPDATE comments SET comment_status = 'approved' WHERE comment_id = {$approve}";
-       $thing = mysqli_query($connection, $query);
+        if (is_visitor()){
+            redirect_visitor();
+        } else {
+            $approve = escape($_GET['approve']);
+            $query = "UPDATE comments SET comment_status = 'approved' WHERE comment_id = {$approve}";
+            $thing = mysqli_query($connection, $query);
+        }
     }
 }
 
@@ -299,28 +331,40 @@ function populate_users_table(){
 function delete_user_with_marked_id(){
     global $connection;
     if (isset($_GET['delete'])){
-        $delete = escape($_GET['delete']);
-        $query = "DELETE FROM users WHERE user_id = {$delete}";
-        mysqli_query($connection, $query);
+        if (is_visitor()){
+            redirect_visitor();
+        } else {
+            $delete = escape($_GET['delete']);
+            $query = "DELETE FROM users WHERE user_id = {$delete}";
+            mysqli_query($connection, $query);
+        }
     }
 }
 function promote_user(){
     global $connection;
     if (isset($_GET['promote'])){
-        $promote = escape($_GET['promote']);
-        $query = "UPDATE users SET user_role = 'admin' WHERE user_id = {$promote}";
-       $thing = mysqli_query($connection, $query);
+        if (is_visitor()){
+            redirect_visitor();
+        } else {
+            $promote = escape($_GET['promote']);
+            $query = "UPDATE users SET user_role = 'admin' WHERE user_id = {$promote}";
+            $thing = mysqli_query($connection, $query);
+        }
     }
 }
 function demote_user(){
     global $connection;
     if (isset($_GET['demote'])){
-        $demote = escape($_GET['demote']);
-        $query = "UPDATE users SET user_role = 'subscriber' WHERE user_id = {$demote}";
-       $thing = mysqli_query($connection, $query);
-       if(!$thing){
-           die('QUERY FAILED: ' . mysqli_error($connection));
-       }
+        if(is_visitor()){
+            redirect_visitor();
+        } else {
+            $demote = escape($_GET['demote']);
+            $query = "UPDATE users SET user_role = 'subscriber' WHERE user_id = {$demote}";
+            $thing = mysqli_query($connection, $query);
+            if(!$thing){
+            die('QUERY FAILED: ' . mysqli_error($connection));
+            }
+        }
     }
 }
 function get_user_info($x){
@@ -366,6 +410,9 @@ function get_numbers_with_params($table, $param, $value){
 function add_post(){
     global $connection;
     if (isset($_POST['create_post'])){
+        if (is_visitor()){
+            redirect_visitor();
+        } else {
         $post_title  = $_POST['title'];
         $post_author = $_POST['author'];
         $post_cat_id = $_POST['cat_id'];
@@ -404,6 +451,7 @@ function add_post(){
             echo "<p class='bg-success'> Post Successful!<a href='../post.php?id={$last_id}'> See Your Post</a> or <a href='./posts.php'>Go to all Posts</a></p>";
         }
      }
+    }
 }
 
 
@@ -438,61 +486,69 @@ if (isset($_POST['create_user'])){
 function update_user(){
     global $connection;
     if (isset($_POST['edit_user'])){
-        $id = escape($_GET['id']);
-        $user_name = escape($_POST['user_name']);
-        $user_password = escape($_POST['user_password']);
-        $user_role = escape($_POST['user_role']);
-        $user_first_name = escape($_POST['user_first_name']);
-        $user_last_name = escape($_POST['user_last_name']);
-        $user_email = escape($_POST['user_email']);
-        $user_img = 'PLACEHOLDER';
+        if (is_visitor()){
+            redirect_visitor();
+        } else {
+            $id = escape($_GET['id']);
+            $user_name = escape($_POST['user_name']);
+            $user_password = escape($_POST['user_password']);
+            $user_role = escape($_POST['user_role']);
+            $user_first_name = escape($_POST['user_first_name']);
+            $user_last_name = escape($_POST['user_last_name']);
+            $user_email = escape($_POST['user_email']);
+            $user_img = 'PLACEHOLDER';
 
      //    $user_img = $_FILES['image']['name'];
      //    $user_img_temp = $_FILES['image']['tmp_name'];
      //    move_uploaded_file($post_img_temp, "../images/{$post_img}");
 
-     $q = "SELECT randSalt FROM users";
-     $get_salt_result = mysqli_query($connection, $q);
-     if (!$get_salt_result){
-        die('QUERY FAILED: ' . mysqli_error($connection));
-     } else {
-        $salt_array = mysqli_fetch_array($get_salt_result);
-        $salt = $salt_array[0];
-        }
-    } 
+            $q = "SELECT randSalt FROM users";
+            $get_salt_result = mysqli_query($connection, $q);
+            if (!$get_salt_result){
+                die('QUERY FAILED: ' . mysqli_error($connection));
+            } else {
+                $salt_array = mysqli_fetch_array($get_salt_result);
+                $salt = $salt_array[0];
+            }
 
-    $encrypted_password = crypt($user_password, $salt);
+            $encrypted_password = crypt($user_password, $salt);
      
-        $query = "UPDATE users SET ";
-        $query .= "user_name = '{$user_name}', ";
+            $query = "UPDATE users SET ";
+            $query .= "user_name = '{$user_name}', ";
 
-        $query .= "user_password = '{$encrypted_password}', ";
+            $query .= "user_password = '{$encrypted_password}', ";
+            
+            $query .= "user_role = '{$user_role}', ";
+            $query .= "user_first_name = '{$user_first_name}', ";
+            $query .= "user_last_name = '{$user_last_name}', ";
+            $query .= "user_email = '{$user_email}' ";
+            $query .= "WHERE user_id = {$id}";
         
-        $query .= "user_role = '{$user_role}', ";
-        $query .= "user_first_name = '{$user_first_name}', ";
-        $query .= "user_last_name = '{$user_last_name}', ";
-        $query .= "user_email = '{$user_email}' ";
-        $query .= "WHERE user_id = {$id}";
-     
-        $edit = mysqli_query($connection, $query);
-        if(!$edit){
-            die('query failed: ' . mysqli_error($connection));
-        } else {
-         header('location: users.php');
+            $edit = mysqli_query($connection, $query);
+            if(!$edit){
+                die('query failed: ' . mysqli_error($connection));
+            } else {
+            header('location: users.php');
+            }
         }
-     }
+    }
+}
 
 function update_category(){
     if (isset($_POST['edit_submit'])){
-        global $connection;
-        $new_cat_name = escape($_POST['new_cat_name']);
-        $edit = escape($_GET['edit']);
-        $query = "UPDATE categories SET cat_title = '{$new_cat_name}' WHERE cat_id = {$edit}";
-        $edit_cat = mysqli_query($connection, $query);
+        if (is_visitor()){
+            redirect_visitor();
+        } else {
+            global $connection;
+            $new_cat_name = escape($_POST['new_cat_name']);
+            $edit = escape($_GET['edit']);
+            $query = "UPDATE categories SET cat_title = '{$new_cat_name}' WHERE cat_id = {$edit}";
+            $edit_cat = mysqli_query($connection, $query);
             if (!$edit_cat){
                 die ('query failed:' . mysqli_error($connection));
             }
-    }
+        }
+    }    
 }
 
 function display_name(){
@@ -522,14 +578,45 @@ function register(){
                     $salt = $salt_array[0];
                     // echo $salt;
                     $encrypted_password = crypt($password, $salt);
-                    $query2 = "INSERT INTO users(user_name, user_email, user_password, user_role) VALUES('{$username}', '{$email}', '{$encrypted_password}', 'subscriber')";      
-                    $result2 = mysqli_query($connection, $query2);
-                    if (!$result2){
+                    
+                    $query2 = "INSERT INTO users(user_name, user_email, user_password, user_role) VALUES(?, ?, ?, 'visitor')";
+                    $stmt = mysqli_prepare($connection, $query2);
+                    mysqli_stmt_bind_param($stmt, "sss", $username, $email, $encrypted_password);
+
+                    $create = mysqli_stmt_execute($stmt);
+                    
+                    if (!$create){
                         die('QUERY FAILED: ' . mysqli_error($connection));
                     } else {
-                        echo "<p class='bg-success text-center'>Success! Go <a href='./'>home</a> to log in.</p>"; }
+                        echo "<p class='bg-success text-center'>Success! Go <a href='./'>home</a> to log in.</p>"; 
                     }
                 }
             }
         }
+    }
+    function visitor_welcome(){
+        if($_SESSION['user_role'] != 'admin'){
+                echo '<script language="javascript">';
+                echo 'alert("Welcome to Admin!\n\nBecause your account does not have administrative priviledges, you are here as a visitor and the admin functionality has been disabled. Nevertheless, you will be able to see how posts are made and edited, categories are managed, comments are monitored, etc.\n\nHappy browsing! ")';
+                echo '</script>';
+            }
+    }
+    function redirect_visitor(){
+        if (strpos($_SERVER['REQUEST_URI'], 'posts.php')){
+            header('location: posts.php');
+        } else if (strpos($_SERVER['REQUEST_URI'], 'categories.php')){
+                header('location: categories.php');
+        } else if (strpos($_SERVER['REQUEST_URI'], 'users.php')){
+            header('location: users.php');
+        } else if (strpos($_SERVER['REQUEST_URI'], 'comments.php')){
+            header('location: comments.php');
+        }
+    }
+    function is_visitor(){
+        if($_SESSION['user_role'] != 'admin'){
+            return true;
+        } else {
+            return false;
+        }
+    }
 ?>

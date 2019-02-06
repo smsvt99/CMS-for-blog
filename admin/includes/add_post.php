@@ -22,7 +22,13 @@ add_post();
 
 <div class="form-group">
     <label for="author">Author</label>
-    <input type="text" name="author" class="form-control">
+    <input type="text" name="author" class="form-control"
+    <?php 
+    if(isset($_SESSION['username'])){
+        echo "value='{$_SESSION['username']}'";
+        echo " readonly";
+        } ?>
+    >
 </div>
 
 <div class="form-group">

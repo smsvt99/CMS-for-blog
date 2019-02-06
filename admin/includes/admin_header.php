@@ -1,6 +1,6 @@
 <?php 
 ob_start();
-session_start();
+session_start(); 
 
 if(empty($_SESSION['user_role'])){
     header("Location: ../index.php");

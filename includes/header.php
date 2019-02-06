@@ -59,10 +59,14 @@
         .sticky{
             position: sticky;
             position: -webkit-sticky;
-            top: 80px;
+            top: 100px;
         }
         .blue{
             color: #4682B4 !important;
+        }
+        .blue-no-hover{
+            color: #4682B4 !important;
+            font-family: monospace;
         }
         .blue:hover{
             color: white !important;

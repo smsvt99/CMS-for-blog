@@ -19,4 +19,4 @@
     <tbody>
         <?php populate_posts_table(); ?>
     </tbody>
-</table>
+</table> 

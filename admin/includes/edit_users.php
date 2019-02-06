@@ -11,7 +11,11 @@ if (isset($_POST['edit_user'])){
 </div>
 <div class="form-group">
     <label for="user_password">Password</label>
-    <input type="password" value="<?php echo get_user_info('user_password'); ?>" name="user_password" class="form-control">
+    <input type="password" value="<?php 
+    if (is_visitor()){
+        echo "no password for you, dear visitor";
+    } else {
+    echo get_user_info('user_password');} ?>" name="user_password" class="form-control">
 </div>
 <!-- <div class="form-group">
     <label for="user_img">User Image</label>
@@ -41,7 +45,11 @@ if (isset($_POST['edit_user'])){
 </div>
 <div class="form-group">
     <label for="user_email">Email</label>
-    <input type="email" value="<?php echo get_user_info('user_email'); ?>" name="user_email" class="form-control">
+    <input type="email" value="<?php 
+    if (is_visitor()){
+        echo "This_info_hidden_from_visitors@yahoo.com";
+    } else {
+    echo get_user_info('user_email');} ?>" name="user_email" class="form-control">
 </div>
 
 <input type="submit" value="Edit User" name="edit_user" class="btn btn-primary">

@@ -11,7 +11,7 @@
             <button class="btn btn-default" type="submit" name="submit">
                 <span class="glyphicon glyphicon-search"></span>
         </button>
-        </span>
+        </span> 
         </form>
     </div> -->
     <!-- /.input-group -->
@@ -19,19 +19,32 @@
 
 <!-- Login -->
 <div class="well">
-    <?php if (isset($_GET['login'])){
-        echo "<p class=' text text-danger'>Invalid credentials, please try again.</p>";
-    } ?>
-    <h4>Login</h4>
-    <div class="form-group">
-    <form action="./includes/login.php" method="post">
-    <label for="username">Username</label>
-        <input type="text" class="form-control" name="username">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" name="password">
-        <input style="margin-top: 5px;" type="submit" name="login" class="btn btn-block btn-primary">
-        </form>
-    </div>
+    <?php
+        if (isset($_SESSION['username'])){
+            echo "<h4>Hello, {$_SESSION['username']}</h4>
+                <ul>
+                    <li><a href='./includes/logout.php'>Log Out</a></li>
+                    <li><a href='./admin/profile.php'>Edit Profile</a></li>
+                </ul>
+            ";
+        } else {
+            if (isset($_GET['login'])){
+                echo "<p class=' text text-danger'>Invalid credentials, please try again.</p>";
+            }
+            echo "<h4>Login</h4>";
+            echo "<div class='form-group'>";
+            echo "<form action='./includes/login.php' method='post'>";
+            echo "<label for='username'>Username</label>";
+            echo "<input type='text' class='form-control' name='username'>";
+            echo "<label for='password'>Password</label>";
+            echo "<input type='password' class='form-control' name='password'>";
+            echo "<input style='margin-top: 5px;' type='submit' name='login' class='btn btn-block btn-primary'>";
+            echo "<hr>";
+            echo "<p class='text-center'><a href='registration.php'>Click here to register and get access to Admin as a visitor!</a></p>";
+            echo "</form>";
+            echo "</div>";
+    }
+    ?>
     <!-- /.input-group -->
 </div>
 
