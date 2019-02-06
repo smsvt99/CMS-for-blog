@@ -58,7 +58,7 @@
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date?></p>
                 <hr>
-                <img class="img-responsive" src="./images/<?php echo $post_img ?>" alt="">
+                <img class="img-responsive post_img" src="./images/<?php echo $post_img ?>" alt="">
                 <hr>
                 <p><?php echo $post_content?></p>
                 </div>
