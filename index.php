@@ -49,7 +49,7 @@
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date?></p>
                 <hr>
-                <a href="post.php?id=<?php echo $post_id ?>"><img class="img-responsive" src="./images/<?php echo $post_img ?>" alt=""></a>
+                <a href="post.php?id=<?php echo $post_id ?>"><img class="post_img img-responsive" src="./images/<?php echo $post_img ?>" alt=""></a>
                 <hr>
                 <div>
                     <p><?php echo $post_content?></p>

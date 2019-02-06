@@ -72,6 +72,10 @@
             right: 50px;
 
         }
+        .post_img{
+            margin-left: auto;
+            margin-right: auto;
+        }
         </style>
 
 
