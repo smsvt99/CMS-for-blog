@@ -8,7 +8,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Home</a>
+                <a class="navbar-brand blue" href="index.php">Home</a>
+
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -29,7 +30,6 @@
                     } 
                  }
                 ?>
-                        <li><a href="admin" class="blue">Admin</a></li>
                     <!-- <li>
                         <a href="#">About</a>
                     </li>
@@ -42,6 +42,9 @@
 
 
                 </ul>
+                <div class="reverse nav navbar-nav">
+                <a href="admin" class="navbar-brand admin-button">Admin</a>
+                </div>
             </div>
             <!-- /.navbar-collapse -->
         </div>

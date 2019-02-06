@@ -4,12 +4,9 @@
     <!-- Navigation -->
    <?php include "includes/navigation.php" ?>    <!-- Page Content -->
     <div class="container">
-    <h1 id="title" class="text-center">
-                    > Hello World _
-                    <small><i>A Blog About Itself</i></small>
-                </h1>
-                <h1 id="sub_title">All posts</h1>
+    <?php include "includes/title.php" ?>
 
+<h1 id="sub_title">All posts</h1>
         <div class="row">
 
             <!-- Blog Entries Column -->

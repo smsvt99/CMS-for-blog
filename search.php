@@ -4,11 +4,14 @@
     <!-- Navigation -->
    <?php include "./includes/navigation.php" ?>    <!-- Page Content -->
     <div class="container">
-    <h1 id="title" class="text-center">
-                    > Hello World _
-                    <small><i>A Blog About Itself</i></small>
-                </h1>
-    <h1 id="sub_title"><?php echo escape($_GET['search']) ?> </h1>
+    <?php include "includes/title.php" ?>
+
+    <h1 id="sub_title">
+        <?php
+            $tag = ucwords(escape($_GET['lemma']));
+            echo $tag; 
+        ?>
+    </h1>
         <div class="row">
 
             <!-- Blog Entries Column -->
@@ -16,8 +19,8 @@
 
                 <!-- First Blog Post -->
                 <?php 
-    if (isset($_GET['search'])){
-        $lemma = escape($_GET['search']);
+    if (isset($_GET['lemma'])){
+        $lemma = escape($_GET['lemma']);
         $query = "SELECT * FROM posts WHERE post_tags LIKE '%$lemma%' ";
         $get_tagged_posts = mysqli_query($connection, $query);
         if (mysqli_num_rows($get_tagged_posts) == 0){
@@ -46,7 +49,7 @@
                 
                 <?php }}} ?>
             </div>
-                
+            </div>
                 <!-- <hr> -->
 
                 <!-- Pager -->

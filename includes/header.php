@@ -59,13 +59,18 @@
         .sticky{
             position: sticky;
             position: -webkit-sticky;
-            top: 10px;
+            top: 80px;
         }
-        a.blue{
+        .blue{
             color: #4682B4 !important;
         }
-        a.blue:hover{
+        .blue:hover{
             color: white !important;
+        }
+        .reverse{
+            position: absolute;
+            right: 50px;
+
         }
         </style>
 

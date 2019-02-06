@@ -7,10 +7,8 @@
     <!-- Navigation -->
    <?php include "includes/navigation.php" ?>    <!-- Page Content -->
     <div class="container">
-    <h1 id="title" class="text-center">
-                    > Hello World _
-                    <small><i>A Blog About Itself</i></small>
-                </h1>
+    <?php include "includes/title.php" ?>
+
 
         <div class="row">
 

@@ -29,7 +29,7 @@
         <input type="text" class="form-control" name="username">
         <label for="password">Password</label>
         <input type="password" class="form-control" name="password">
-        <input type="submit" name="login" class="btn btn-primary">
+        <input style="margin-top: 5px;" type="submit" name="login" class="btn btn-block btn-primary">
         </form>
     </div>
     <!-- /.input-group -->
@@ -63,9 +63,14 @@
                 
                 <?php
             }
+            $allTagsArray = array_unique($allTagsArray, SORT_STRING);
+            // print_r($allTagsArray);
             for($i=0; $i < sizeof($allTagsArray); $i++){
-                echo "<a href ='search.php?search={$allTagsArray[$i]}'>{$allTagsArray[$i]}</a>";
-                echo ' &#8226; ';
+                if(isset($allTagsArray[$i])){
+                    $tag = ucwords($allTagsArray[$i]);
+                    echo "<a href ='search.php?lemma={$allTagsArray[$i]}'>{$tag}</a>";
+                    echo ' &#8226; ';
+                }
             }
             ?>
             </ul>
