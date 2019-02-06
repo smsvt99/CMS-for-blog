@@ -75,6 +75,8 @@
         .post_img{
             margin-left: auto;
             margin-right: auto;
+            border: 1px solid grey;
+            border-radius: 4px;
         }
         </style>
 
