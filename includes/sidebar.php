@@ -18,7 +18,7 @@
 <!-- </div> -->
 
 <!-- Login -->
-<div class="well">
+<div class="well not-black">
     <?php
         if (isset($_SESSION['username'])){
             echo "<h4>Hello, {$_SESSION['username']}</h4>
@@ -50,7 +50,7 @@
 
 <!-- Blog Categories Well -->
 
-<div class="well">
+<div class="well not-black">
     <h4>Tags</h4>
     <div class="row">
         <div class="col-lg-12">

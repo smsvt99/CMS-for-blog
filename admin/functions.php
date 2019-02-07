@@ -595,9 +595,9 @@ function register(){
         }
     }
     function visitor_welcome(){
-        if($_SESSION['user_role'] != 'admin'){
+        if(is_visitor()){
                 echo '<script language="javascript">';
-                echo 'alert("Welcome to Admin!\n\nBecause your account does not have administrative priviledges, you are here as a visitor and the admin functionality has been disabled. Nevertheless, you will be able to see how posts are made and edited, categories are managed, comments are monitored, etc.\n\nHappy browsing! ")';
+                echo 'alert("Welcome to Admin!\n\nBecause your account does not have administrative privileges, you are here as a visitor and the admin functionality has been disabled. Nevertheless, you will be able to see how posts are made and edited, categories are managed, comments are monitored, etc.\n\nHappy browsing! ")';
                 echo '</script>';
             }
     }

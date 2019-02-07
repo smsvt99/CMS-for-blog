@@ -44,14 +44,14 @@
 
         body{
             background: #222222;  /* fallback for old browsers */
-            background: -webkit-linear-gradient(to bottom, #222222, #222222, #222222, #222222, #4682B4);  /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(to bottom, #222222, #222222, #222222, #222222, #4682B4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: -webkit-linear-gradient(to bottom, #222222, #222222, #222222, #28323a, #2e4253, #4682B4);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to bottom, #222222, #222222, #222222, #28323a, #2e4253, #4682B4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
             background-attachment: fixed;
 
         }
         .not-black{
             padding: 20px;
-            background-color: #f5f5f5;
+            background-color: #ffffff;
             border: 1px solid #e3e3e3;
             border-radius: 4px;
             margin-bottom: 10px;

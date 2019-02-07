@@ -17,7 +17,7 @@
 <section id="login">
     <div class="container">
         <div class="row">
-            <div class="col-xs-6 col-xs-offset-3">
+            <div class="col-xs-12 col-med-10">
                 <div class="form-wrap not-black">
                 <h1 class='blue-no-hover'>Register</h1>
                 <p class="text-center">Registering an account will give you access to Admin as a 'visitor'.</p>
