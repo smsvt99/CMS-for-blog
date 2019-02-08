@@ -57,7 +57,7 @@ function deleteCategory(){
     }
 }
 
-function populate_posts_table(){
+function populate_posts_table(){ 
     global $connection;
     $query = "SELECT * FROM posts";
     $get_posts = mysqli_query($connection, $query);

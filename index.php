@@ -33,7 +33,7 @@
                 }
                 
                 mysqli_stmt_execute($stmt);
-                mysqli_stmt_bind_result($stmt, $post_id, $post_cat_id, $post_title, $post_author, $post_date, $post_img, $post_content, $post_tags, $post_comment_count, $post_status);
+                mysqli_stmt_bind_result($stmt, $post_id, $post_cat_id, $post_title, $post_author, $post_date, $post_img, $post_content, $post_tags, $post_comment_count, $post_status); 
 
                       
                     while (mysqli_stmt_fetch($stmt)){

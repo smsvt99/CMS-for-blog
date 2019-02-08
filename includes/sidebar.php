@@ -30,6 +30,9 @@
         } else {
             if (isset($_GET['login'])){
                 echo "<p class=' text text-danger'>Invalid credentials, please try again.</p>";
+                if($_GET['login']=='katie'){
+                    echo 'hi katie';
+                }
             }
             echo "<h4>Login</h4>";
             echo "<div class='form-group'>";
