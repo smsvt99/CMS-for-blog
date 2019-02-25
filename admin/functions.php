@@ -308,14 +308,15 @@ function email_approval($id){
     $execute = mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     while ($row = mysqli_fetch_array($result)){
-    $msg = "Hello, {$row['comment_author']}, \n\n
-    Your comment on {$row['comment_date']} has been approved! See it at http://seanstone.co/cms/post.php?id={$row['comment_post_id']}";
-    $msg = wordwrap($msg,70);
-    $success =  mail($row['comment_email'],"Your comment has been approved!",$msg);
-    if (!$success){
-        $errorMessage = error_get_last()['message'];
-        echo $errorMessage;
-    }
+        $headers = 'From: webmaster@example.com' . "\r\n";
+        $msg = "Hello, {$row['comment_author']}, \n\n
+        Your comment on {$row['comment_date']} has been approved! See it at http://seanstone.co/cms/post.php?id={$row['comment_post_id']}";
+        $msg = wordwrap($msg,70);
+        $success =  mail($row['comment_email'],"Your comment has been approved!",$msg, '', "-f sean@seanstone.co");
+        if (!$success){
+            $errorMessage = error_get_last()['message'];
+            echo $errorMessage;
+        }
     }
 }
 function email_unapproval($id){
@@ -326,14 +327,14 @@ function email_unapproval($id){
     $execute = mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     while ($row = mysqli_fetch_array($result)){
-    $msg = "Hello, {$row['comment_author']}, \n\n
-    Your comment on {$row['comment_date']} on the post http://seanstone.co/cms/post.php?id={$row['comment_post_id']} has been been rejected.";
-    $msg = wordwrap($msg,70);
-    $success = mail($row['comment_email'],"Your comment was not approved",$msg);
-    if (!$success){
-        $errorMessage = error_get_last()['message'];
-        echo $errorMessage;
-    }
+        $msg = "Hello, {$row['comment_author']}, \n\n
+        Your comment on {$row['comment_date']} on the post http://seanstone.co/cms/post.php?id={$row['comment_post_id']} has been been rejected.";
+        $msg = wordwrap($msg,70);
+        $success = mail($row['comment_email'],"Your comment was not approved",$msg, '', "-f sean@seanstone.co");
+        if (!$success){
+            $errorMessage = error_get_last()['message'];
+            echo $errorMessage;
+        }
     }
 }
 

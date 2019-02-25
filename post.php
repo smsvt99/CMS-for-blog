@@ -150,9 +150,8 @@
 
                 // use wordwrap() if lines are longer than 70 characters
                 $msg = wordwrap($msg,70);
-
                 // send email
-                mail("smsvt99@gmail.com","Please review {$author}'s comment", $msg);
+                mail("smsvt99@gmail.com","Please review {$author}'s comment", $msg, '', "-f sean@seanstone.co");
             }
         }
 
