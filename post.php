@@ -9,6 +9,9 @@
     <div class="container">
     <?php include "includes/title.php" ?>
 
+    <?php if(isset($_POST['create_comment'])){
+            create_comment();} 
+            ?>
 
         <div class="row">
 
@@ -28,7 +31,7 @@
                 $thing = mysqli_stmt_execute($stmt);
                 if(!$thing){
                     die("FAILURE: " . mysqli_error($connection));
-                }
+                } 
                 mysqli_stmt_bind_result($stmt, $post_cat_id, $post_title, $post_author, $post_date, $post_img, $post_content, $post_tags, $post_comment_count, $post_status);
                 // $get_posts = mysqli_query($connection, $query);
                 // while ($row = mysqli_fetch_assoc($get_posts)){
@@ -70,9 +73,7 @@
                                 <?php show_comments_for_post(); ?>
                 
                                 <!-- Comments Form -->
-        <?php if(isset($_POST['create_comment'])){
-            create_comment();} 
-            ?>
+
                                 <div class="well">
                     <h4>Leave a Comment:</h4>
                     <form role="form" action="" method="POST">
@@ -127,6 +128,7 @@
             empty($_POST['comment_content'])){
                 echo "<script>alert('All fields are required when submitting a comment!')</script>";
             } else {
+                echo "<p class='text-center bg-success'>Thank you for your comment! It will be reviewed by an admin promptly.</p>";
                 global $connection;
                 $id = escape($_GET['id']);
                 $author = escape($_POST['comment_author']);
@@ -143,6 +145,14 @@
         
                 $query2="UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = {$id}";
                 $update_post_count = mysqli_query($connection, $query2);
+
+                $msg = "{$author} just left you a comment \n\n {$email} \n\n {$content}";
+
+                // use wordwrap() if lines are longer than 70 characters
+                $msg = wordwrap($msg,70);
+
+                // send email
+                mail("smsvt99@gmail.com","Please review {$author}'s comment", $msg);
             }
         }
 

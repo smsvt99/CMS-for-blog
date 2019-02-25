@@ -4,7 +4,7 @@
 
 <table class="table table-bordered table-hover">
     <thead>
-        <tr>
+        <tr> 
             <th>Id</th>
             <th>Author</th>
             <th>Comment</th>

@@ -4,7 +4,7 @@ function escape($string){
     return mysqli_real_escape_string($connection, trim(strip_tags($string)));
 }
 
-function makeNewCategory(){
+function makeNewCategory(){ 
     global $connection;
     if(isset($_POST['submit'])){
         if(is_visitor()){
@@ -282,8 +282,10 @@ function unapprove_comment_with_marked_id(){
             $unapprove = escape($_GET['unapprove']);
             $query = "UPDATE comments SET comment_status = 'unapproved' WHERE comment_id = {$unapprove}";
             $thing = mysqli_query($connection, $query);
+            email_unapproval($unapprove);
         }
     }
+
 }
 function approve_comment_with_marked_id(){
     global $connection;
@@ -294,7 +296,36 @@ function approve_comment_with_marked_id(){
             $approve = escape($_GET['approve']);
             $query = "UPDATE comments SET comment_status = 'approved' WHERE comment_id = {$approve}";
             $thing = mysqli_query($connection, $query);
+            email_approval($approve);
         }
+    }
+}
+function email_approval($id){
+    global $connection;
+    $query="SELECT * FROM comments WHERE comment_id = ?";
+    $stmt = mysqli_prepare($connection, $query);
+    $bind = mysqli_stmt_bind_param($stmt, 'i', $id);
+    $execute = mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    while ($row = mysqli_fetch_array($result)){
+    $msg = "Hello, {$row['comment_author']}, \n\n
+    Your comment on {$row['comment_date']} has been approved! See it at http://seanstone.co/cms/post.php?id={$row['comment_post_id']}";
+    $msg = wordwrap($msg,70);
+    mail($row['comment_email'],"Your comment has been approved!",$msg);
+    }
+}
+function email_unapproval($id){
+    global $connection;
+    $query="SELECT * FROM comments WHERE comment_id = ?";
+    $stmt = mysqli_prepare($connection, $query);
+    $bind = mysqli_stmt_bind_param($stmt, 'i', $id);
+    $execute = mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    while ($row = mysqli_fetch_array($result)){
+    $msg = "Hello, {$row['comment_author']}, \n\n
+    Your comment on {$row['comment_date']} on the post http://seanstone.co/cms/post.php?id={$row['comment_post_id']} has been been rejected.";
+    $msg = wordwrap($msg,70);
+    mail($row['comment_email'],"Your comment was not approved",$msg);
     }
 }
 
