@@ -314,6 +314,7 @@ function email_approval($id){
     $success =  mail($row['comment_email'],"Your comment has been approved!",$msg);
     if (!$success){
         $errorMessage = error_get_last()['message'];
+        echo $errorMessage;
     }
     }
 }
@@ -331,6 +332,7 @@ function email_unapproval($id){
     $success = mail($row['comment_email'],"Your comment was not approved",$msg);
     if (!$success){
         $errorMessage = error_get_last()['message'];
+        echo $errorMessage;
     }
     }
 }
