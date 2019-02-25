@@ -311,7 +311,10 @@ function email_approval($id){
     $msg = "Hello, {$row['comment_author']}, \n\n
     Your comment on {$row['comment_date']} has been approved! See it at http://seanstone.co/cms/post.php?id={$row['comment_post_id']}";
     $msg = wordwrap($msg,70);
-    mail($row['comment_email'],"Your comment has been approved!",$msg);
+    $success =  mail($row['comment_email'],"Your comment has been approved!",$msg);
+    if (!$success){
+        $errorMessage = error_get_last()['message'];
+    }
     }
 }
 function email_unapproval($id){
@@ -325,7 +328,10 @@ function email_unapproval($id){
     $msg = "Hello, {$row['comment_author']}, \n\n
     Your comment on {$row['comment_date']} on the post http://seanstone.co/cms/post.php?id={$row['comment_post_id']} has been been rejected.";
     $msg = wordwrap($msg,70);
-    mail($row['comment_email'],"Your comment was not approved",$msg);
+    $success = mail($row['comment_email'],"Your comment was not approved",$msg);
+    if (!$success){
+        $errorMessage = error_get_last()['message'];
+    }
     }
 }
 
