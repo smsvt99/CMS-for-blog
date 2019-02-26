@@ -1,24 +1,19 @@
 <?php include "./includes/db.php" ?>
-    <?php include "./includes/header.php" ?>
+<?php include "./includes/header.php" ?>
     
     <!-- Navigation -->
-   <?php include "./includes/navigation.php" ?>    <!-- Page Content -->
-    <div class="container">
+<?php include "./includes/navigation.php" ?>    <!-- Page Content -->
+<div class="container">
     <?php include "includes/title.php" ?>
-
     <h1 id="sub_title">
-        <?php
-            $tag = ucwords(escape($_GET['lemma']));
-            echo $tag; 
-        ?>
+        <?php $tag = ucwords(escape($_GET['lemma']));
+            echo $tag; ?>
     </h1>
-        <div class="row">
-
-            <!-- Blog Entries Column -->
-            <div class="col-md-9">
-
-                <!-- First Blog Post -->
-                <?php 
+    <div class="row">
+        <!-- Blog Entries Column -->
+        <div class="col-md-9">
+            <!-- First Blog Post -->
+            <?php 
     if (isset($_GET['lemma'])){
         $lemma = escape($_GET['lemma']);
         $query = "SELECT * FROM posts WHERE post_tags LIKE '%$lemma%' ";
@@ -45,11 +40,12 @@
                 <img class="post_img img-responsive" src="./images/<?php echo $post_img ?>" alt="">
                 <hr>
                 <p><?php echo $post_content?></p>
-                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>                
+                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>   
+                </div>
                 
                 <?php }}} ?>
             </div>
-            </div>
+            <!-- </div> -->
                 <!-- <hr> -->
 
                 <!-- Pager -->
@@ -62,10 +58,11 @@
                     </li>
                 </ul> -->
 
-            </div>
 
-            <!-- Blog Sidebar Widgets Column -->
-        <?php include "./includes/sidebar.php" ?>
+            <!-- </div> -->
+
+                    <!-- Blog Sidebar Widgets Column -->
+                    <?php include "./includes/sidebar.php" ?>
 
         </div>
         <!-- /.row -->

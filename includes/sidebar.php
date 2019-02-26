@@ -1,4 +1,4 @@
-<div class="col-md-3 sticky">
+<div class="col-md-3 sticky"> 
 
 <!-- Blog Search Well -->
 
