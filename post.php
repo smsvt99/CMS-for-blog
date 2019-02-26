@@ -64,7 +64,7 @@
                 <hr>
                 <img class="img-responsive post_img" src="./images/<?php echo $post_img ?>" alt="">
                 <hr>
-                <p><?php echo $post_content?></p>
+                <div id='post-text'><?php echo $post_content?></div>
                 </div>
                 <?php
                 }

@@ -82,6 +82,9 @@
             border: 1px solid grey;
             border-radius: 4px;
         }
+        #post-text{
+            margin: 50px !important;
+        }
         </style>
 
 
